@@ -37,6 +37,8 @@ Each line is a fact and an action, nothing else.
 | `Revised (review):` | A review finding that changes the approach. |
 | `Follow-up:` | Work found outside this ticket's scope, and anything you couldn't verify yourself, naming what would let an agent verify it next time: a harness, a fixture, access, or a check. |
 
+A revision that changes what the ticket or spec promises (a public interface, the scope, or a DR) is the user's decision; every other revision is yours. Bring the facts, the options, and your recommendation, worded so "yes" accepts it, and keep building any slice that doesn't depend on the answer. If the user is AFK and the choice is reversible, take your recommendation, log it, and continue.
+
 A revision you can't phrase in glossary terms marks a glossary gap: write it in the code's words and tag it `(term)`, combining tags as `(review, term)`.
 
 Never rewrite or delete a line once written. A later line that contradicts an earlier one is the record working.
