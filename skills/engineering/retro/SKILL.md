@@ -12,11 +12,13 @@ The user has asked for a **retrospective**. You are suggesting improvements to t
 
 2. Read the primary sources for the session the user specifies. This may mean searching through session logs on this machine. If the user doesn't specify a session, default to the current one. Include the revision lines in the work log (`.agent-logs/`) or the PR body: each is a surprise, and a surprise that recurs across PRs is the strongest candidate.
 
-3. Classify each failure by the level it happened at (Rasmussen's skills, rules, knowledge). The level picks the kind of remedy:
+3. Classify each failure by level (Rasmussen and Reason). The level picks the kind of remedy; the categories below pick where it goes:
 
-   - **Skill**: a slip in routine execution the agent knows how to do. → an automated check.
-   - **Rule**: an instruction that was wrong, or right but fired in the wrong context. → fix that skill's trigger or wording.
-   - **Knowledge**: a novel problem no instruction covered. → docs, a glossary entry, or a DR; or accept it as novel.
+   - **Slip**: the agent knew what to do and didn't do it. → an automated check where the slip is mechanical, otherwise a reviewer rule in `CODING_STANDARDS.md`.
+   - **Rule-based mistake**: an instruction was wrong, or right but fired in the wrong context. → fix the steering file that holds it (`SKILL.md`, `AGENTS.md`, or `CODING_STANDARDS.md`).
+   - **Knowledge gap**: no instruction or source covered the problem. → docs, a pointer, a glossary entry, a DR, or information access; or accept it as novel.
+
+   Tool economy and No-ops are audits of the environment, not failures: skip classifying them.
 
 4. Look for candidates for improvement in these categories.
 
@@ -29,7 +31,7 @@ The user has asked for a **retrospective**. You are suggesting improvements to t
 - **No-ops**: look for instructions in steering files that don't modify the agent's behavior. _Use when_ the steering files are large and unwieldy.
 - **Information access**: look for opportunities to increase the agent's access to information. Teeing dev server logs, readonly access to third-party services. _Use when_ a crucial piece of information was not available to the agent.
 
-5. Present these candidates to the user, in order of severity.
+5. Present these candidates to the user: recurring ones first, then by severity.
 
 ## Reference
 
