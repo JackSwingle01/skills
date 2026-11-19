@@ -20,6 +20,6 @@ Use whatever lint, typecheck, and test commands the repo has. Run typechecking a
 
 Commit your work to the current branch, following the repo's commit conventions.
 
-Then call the Skill tool with "code-review" against the branch's base, passing it the work log's path, and commit its fixes separately.
+Then call the Skill tool with "code-review" against the branch's base, passing it the work log's path, and commit its fixes separately. The two commits are a measurement: across runs, the share that needed a review commit shows how well the implementation and the review are each doing their job.
 
 Finally, call the Skill tool with "pr", passing it the work log's path, and open the pull request in this session using the repo's conventions.
