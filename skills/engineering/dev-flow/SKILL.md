@@ -46,7 +46,7 @@ For a ticket someone else wrote, triage checks the work isn't already built, rep
 3. **Branch: is this a multi-session build?**
    - **Yes** → **`/to-spec`** writes the spec to a dated file in the repo, settling the test seams with the user, and opens it as its own pull request. Then **`/to-tickets`** splits it into tracer-bullet tickets with blocking edges, in the repo's ticket conventions. Then **`/implement`** one ticket at a time, blockers first: each opens its own pull request, then **`/clear`** before the next ticket. Each ticket links the spec and its PR carries the revisions, so once the PR is open the context is disposable.
    - **No** → **`/implement`** right here, in the same context window.
-4. **`/implement`** loads `codebase-design`, builds test-first with `tdd` at the agreed seams, runs the repo's lint, typecheck, and test commands, closes with `code-review` (Standards + Spec), logs revisions, and opens the PR in the same session.
+4. **`/implement`** loads `codebase-design`, builds test-first with `tdd` at the agreed seams, runs the repo's lint, typecheck, and test commands, closes with `code-review` (Standards + Spec), and opens the PR in the same session. Throughout, `work-log` records the hypothesis and every revision, which review, the PR body, and `/retro` read.
 5. **Pull request.** Handle review using the repo's conventions. This is where the flow ends.
 6. **`/retro`**, optional. After a build that went sideways, it looks back over the session and suggests changes to the agent's environment (pointers, automated checks, coding standards), not the code. Run it in the session it's looking back on, before you clear.
 

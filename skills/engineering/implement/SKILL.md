@@ -12,36 +12,13 @@ If the repo requires a ticket for every change (check `AGENTS.md`/`CLAUDE.md`) a
 
 Before writing code, call the Skill tool with "codebase-design" for the vocabulary of modules, interfaces, depth, and seams.
 
-## Work log
-
-Keep a **work log**: one file per ticket in `.agent-logs/`, named `YYYY-MM-DD-short-name.md`, dated the day the work started, with the ticket reference in the short name. The log stays out of git: if the folder isn't ignored, add it to the file `git rev-parse --git-path info/exclude` prints.
-
-The log holds only these lines, appended as they happen, in `GLOSSARY.md` terms:
-
-```text
-# <ticket reference>: <title>
-
-Hypothesis:
-- Changes: <modules>
-- Stays green: <tests or suites>
-- First red: <test> fails on <symptom>
-
-Revised: <what you found> → <what you did>
-Revised (review): <what you found> → <what you did>
-Follow-up: <work found outside this ticket's scope>
-```
-
-Each line is a fact and an action, nothing else. A revision you can't phrase in glossary terms marks a glossary gap: write it in the code's words and tag it `(term)`, combining tags as `(review, term)`.
-
 ## Steps
 
-1. **Hypothesis.** Write it to the log before any code.
+1. **Hypothesis.** Call the Skill tool with "work-log", start this ticket's log, and write the hypothesis to it before any code.
 
 2. **Build.** Call the Skill tool with "tdd" where possible, at pre-agreed seams. Use whatever lint, typecheck, and test commands the repo has. Run typechecking and single test files regularly, and the full test suite once at the end.
 
-   When you learn something that changes the approach, change it, and log a **revision** at that moment. A better solution always beats the hypothesis. Every pre-existing test you change gets a revision too.
-
-   Anything you can't verify yourself gets a follow-up naming what would let an agent verify it next time: a harness, a fixture, access, or a check.
+   When you learn something that changes the approach, change it, and log a **revision** at that moment. Every pre-existing test you change gets a revision too, and anything you can't verify yourself gets a follow-up.
 
    A change to what the ticket or spec promises (a public interface, the scope, or a DR) is the user's decision; every other choice is yours. Bring the facts you found, the options, and your recommendation, worded so "yes" accepts it, and keep building any slice that doesn't depend on the answer. If the user is AFK and the choice is reversible, take your recommendation, log it as a revision, and continue.
 
