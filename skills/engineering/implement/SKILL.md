@@ -41,6 +41,8 @@ Each line is a fact and an action, nothing else. A revision you can't phrase in 
 
    When you learn something that changes the approach, change it, and log a **revision** at that moment. A better solution always beats the hypothesis. Every pre-existing test you change gets a revision too.
 
+   Anything you can't verify yourself gets a follow-up naming what would let an agent verify it next time: a harness, a fixture, access, or a check.
+
    A change to what the ticket or spec promises (a public interface, the scope, or a DR) is the user's decision; every other choice is yours. Bring the facts you found, the options, and your recommendation, worded so "yes" accepts it, and keep building any slice that doesn't depend on the answer. If the user is AFK and the choice is reversible, take your recommendation, log it as a revision, and continue.
 
 3. **Commit** your work to the current branch, following the repo's commit conventions.

@@ -12,7 +12,13 @@ The user has asked for a **retrospective**. You are suggesting improvements to t
 
 2. Read the primary sources for the session the user specifies. This may mean searching through session logs on this machine. If the user doesn't specify a session, default to the current one. Include the revision lines in the work log (`.agent-logs/`) or the PR body: each is a surprise, and a surprise that recurs across PRs is the strongest candidate.
 
-3. Look for candidates for improvement in these categories.
+3. Classify each failure by the level it happened at (Rasmussen's skills, rules, knowledge). The level picks the kind of remedy:
+
+   - **Skill**: a slip in routine execution the agent knows how to do. → an automated check.
+   - **Rule**: an instruction that was wrong, or right but fired in the wrong context. → fix that skill's trigger or wording.
+   - **Knowledge**: a novel problem no instruction covered. → docs, a glossary entry, or a DR; or accept it as novel.
+
+4. Look for candidates for improvement in these categories.
 
 - **Navigation**: how easy was it for the agent to find the right files? Are there hidden dependencies between files? Would a **navigation pointer** make it easier? _Use when_ the session took a long time to find a piece of information.
 - **Domain language**: did a surprise turn on a word? A `(term)` revision, or code using a glossary term differently from its definition, is a glossary gap: call the Skill tool with "domain-modeling" to propose the entry, or a DR if the meaning was a hard-to-reverse choice. _Use when_ a revision is tagged `(term)` or names a term the glossary defines differently.
@@ -23,7 +29,7 @@ The user has asked for a **retrospective**. You are suggesting improvements to t
 - **No-ops**: look for instructions in steering files that don't modify the agent's behavior. _Use when_ the steering files are large and unwieldy.
 - **Information access**: look for opportunities to increase the agent's access to information. Teeing dev server logs, readonly access to third-party services. _Use when_ a crucial piece of information was not available to the agent.
 
-4. Present these candidates to the user, in order of severity.
+5. Present these candidates to the user, in order of severity.
 
 ## Reference
 
