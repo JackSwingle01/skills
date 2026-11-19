@@ -11,10 +11,20 @@ metadata:
 
 Use this template for writing the PR body:
 
-```markdown
+````markdown
 ## Summary
 
 <diagram, diff-sketch, or tree>
+
+## Revisions
+
+```text
+<Cause and Revised lines>
+```
+
+## Follow-ups
+
+- <Follow-up lines>
 
 ## Evidence
 
@@ -30,7 +40,7 @@ Use this template for writing the PR body:
 **Blast Radius:** <one-word description>
 
 <optional: potential ramifications of merge>
-```
+````
 
 ## Sections
 
@@ -154,6 +164,22 @@ function expandSkill(command: string): string {
 Place each visual next to the short text it supports. Keep only the calls, files, props, states, and boundaries needed to answer the user's current question or the options to resolve the current discussion point.
 
 You may use one of these, you may use several, it is unlikely you will use all of them. Use your judgement and don't overwhelm the user.
+
+### Revisions
+
+The `Cause:` lines from the branch's commit messages (`git log <base>..HEAD`), then the `Revised` lines from the work log, if the caller passed one. Copy them verbatim, in order, tags kept:
+
+```text
+Cause: Cart rounds before applying discount
+Revised: totals computed in both Invoice and Cart → Cart calls Invoice.total
+Revised (review): Refund recomputed tax → Refund calls Invoice.total
+```
+
+The code block is the whole section. Each line was written at the moment the approach changed, so it is a record; copy it as it stands. With no revisions, the section is the one line `No revisions.`: the absence is a signal too.
+
+### Follow-ups
+
+The work log's `Follow-up` lines, one bullet each, verbatim. With none, drop the section.
 
 ### Evidence
 

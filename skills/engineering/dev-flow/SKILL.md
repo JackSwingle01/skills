@@ -40,16 +40,15 @@ Three ways work starts. Each joins the main flow.
 | **A raw incoming issue** (bug report, request) | `/triage` → it routes to one of the paths here, `diagnosing-bugs`, or `/wayfinder` |
 
 For a ticket someone else wrote, triage checks the work isn't already built, reproduces it if it's a bug, and lists the gaps. With no gaps it goes straight to `/implement`. With gaps it runs a light grilling, research, or prototype aimed only at them and writes the answers back into the ticket, so the ticket stays the spec.
-
 ## The main flow: idea → pull request
 
 1. **`/grill-with-docs`** sharpens the idea by interview, recording terms in the glossary and hard-to-reverse decisions as DRs (decision records) as they land.
 2. **Detour, only if a question needs a runnable answer** (state, business logic, a UI you have to see): `/handoff` out, open a fresh session against that file, run `prototype`, then `/handoff` back what you learned. Facts from outside the repo go to `research` instead, which runs as a background agent. Both are detours inside the grilling, not stages after it.
 3. **Branch: is this a multi-session build?**
-   - **Yes** → **`/to-spec`** writes the spec to a dated file in the repo, settling the test seams with the user, and opens it as its own pull request. Then **`/to-tickets`** splits it into tracer-bullet tickets with blocking edges, in the repo's ticket conventions. Then **`/implement`** one ticket at a time, blockers first, **`/clear`ing between tickets**. Each ticket links the spec, so the last ticket's context is disposable.
+   - **Yes** → **`/to-spec`** writes the spec to a dated file in the repo, settling the test seams with the user, and opens it as its own pull request. Then **`/to-tickets`** splits it into tracer-bullet tickets with blocking edges, in the repo's ticket conventions. Then **`/implement`** one ticket at a time, blockers first: each opens its own pull request, then **`/clear`** before the next ticket. Each ticket links the spec and its PR carries the revisions, so once the PR is open the context is disposable.
    - **No** → **`/implement`** right here, in the same context window.
-4. **`/implement`** loads `codebase-design`, builds test-first with `tdd` at the agreed seams, runs the repo's lint, typecheck, and test commands, closes with `code-review` (Standards + Spec), and commits.
-5. **Pull request.** Call the Skill tool with "pr" to write the body. Then open the PR and handle review using the repo's conventions. This is where the flow ends.
+4. **`/implement`** loads `codebase-design`, builds test-first with `tdd` at the agreed seams, runs the repo's lint, typecheck, and test commands, closes with `code-review` (Standards + Spec), logs revisions, and opens the PR in the same session.
+5. **Pull request.** Handle review using the repo's conventions. This is where the flow ends.
 6. **`/retro`**, optional. After a build that went sideways, it looks back over the session and suggests changes to the agent's environment (pointers, automated checks, coding standards), not the code. Run it in the session it's looking back on, before you clear.
 
 ### Context hygiene
@@ -60,7 +59,7 @@ The limit on this is the **[smart zone](https://www.aihero.dev/ai-coding-diction
 
 ## Routes off the main flow
 
-- **Something's broken** → `diagnosing-bugs`. For the hard ones: the bug that resists a first glance, the intermittent flake, the regression between two known-good states. It builds a feedback loop that goes red on *this* bug before theorising, then fixes with a regression test. If the real finding is that there's no good seam to lock the bug down, that's a job for `/improve-codebase-architecture`.
+- **Something's broken** → `diagnosing-bugs`. For the hard ones: the bug that resists a first glance, the intermittent flake, the regression between two known-good states. It builds a feedback loop that goes red on *this* bug before theorising, then fixes with a regression test held to `tdd`'s standard. If the real finding is that there's no good seam to lock the bug down, that's a job for `/improve-codebase-architecture`.
 - **A huge, foggy effort, too big for one session** → `/wayfinder`. It charts a map of decision tickets and resolves them one per session, producing decisions, not deliverables. When the map clears, it joins the main flow at `/to-spec`. Save it for exactly that, never a well-scoped feature.
 - **Codebase upkeep** → `/improve-codebase-architecture` surveys for deepening opportunities. Picking one generates an idea that enters the main flow at `/grill-with-docs`.
 
