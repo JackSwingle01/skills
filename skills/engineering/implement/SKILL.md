@@ -12,10 +12,14 @@ If the repo requires a ticket for every change (check `AGENTS.md`/`CLAUDE.md`) a
 
 Before writing code, call the Skill tool with "codebase-design" for the vocabulary of modules, interfaces, depth, and seams.
 
+Call the Skill tool with "work-log" and keep this ticket's log from before the first line of code.
+
 Call the Skill tool with "tdd" where possible, at pre-agreed seams.
 
 Use whatever lint, typecheck, and test commands the repo has. Run typechecking and single test files regularly, and the full test suite once at the end.
 
-Once done, call the Skill tool with "code-review" to review the work.
-
 Commit your work to the current branch, following the repo's commit conventions.
+
+Then call the Skill tool with "code-review" against the branch's base, passing it the work log's path, and commit its fixes separately. The two commits are a measurement: across runs, the share that needed a review commit shows how well the implementation and the review are each doing their job.
+
+Finally, call the Skill tool with "pr", passing it the work log's path, and open the pull request in this session using the repo's conventions.

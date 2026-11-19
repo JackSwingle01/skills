@@ -34,5 +34,11 @@ When the shape of that interface is itself in question (how deep the module is, 
 ## Rules of the loop
 
 - **Red before green.** Write the failing test first, then only enough code to pass it. Don't anticipate future tests or add speculative features.
+- **Predict the red.** Before running a new test, state what it will fail on. The red counts only when it fails for that reason; any other failure (an import error, a typo) is a broken test, so fix it until the predicted failure shows.
 - **One slice at a time.** One seam, one test, one minimal implementation per cycle.
+- **Two failed fixes is a diagnosis.** When the same test stays red after two different fixes, call the Skill tool with "diagnosing-bugs" and start at its Phase 2 with that test as the loop. Already inside `diagnosing-bugs`, return to its Phase 3: the hypothesis was wrong.
+- **A pre-existing test that goes red is evidence.** Settle which case it is, and record the reason for any change (as a `Revised` line, if a work log is being kept):
+  - The spec or ticket changes that behaviour: update the test, citing the spec line.
+  - The behaviour is unchanged and the test broke anyway: it is implementation-coupled (see Anti-patterns). Rewrite it against the public interface.
+  - Neither: your change is wrong. Change the approach and keep the test.
 - **Refactoring is not part of the loop.** It belongs to the review stage (see the `code-review` skill), not the red → green implementation cycle.

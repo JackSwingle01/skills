@@ -1,12 +1,12 @@
 ---
 name: dev-flow
-description: Walk through the development flow one step at a time. Works out where the current work is, names the next skill to run, and says whether to continue, clear, or compact first.
+description: Walk through the development flow one step at a time. Works out where the current work is, names the next skill to run, and says when to clear.
 disable-model-invocation: true
 ---
 
 # Dev Flow
 
-Guide the user through the flow from idea to pull request, one step per invocation. The user runs `/dev-flow` at each phase boundary; you work out where they are and tell them what comes next.
+Guide the user through the flow from idea to pull request, one step per invocation. The user runs `/dev-flow` between steps; you work out where they are and tell them what comes next.
 
 Before stating what a skill does or recommending a step be skipped, read that skill's SKILL.md: the summaries here are for orientation only.
 
@@ -23,11 +23,9 @@ Repo-specific steps (branch naming, ticket rules, lint and test commands, PR and
 
    If the state doesn't show which entry path this is, ask (see Entry paths).
 
-2. **Name the phase and the next step.** Say which phase the work is in, which skill to run next, and why. User-invoked skills are run by the user: give them the command. Model-invoked skills you may call yourself.
+2. **Name the phase and the next step.** Say which phase the work is in, which skill to run next, and why. User-invoked skills are run by the user: give them the command. Model-invoked skills you may call yourself. If the next step sits past one of the two boundaries (see Context hygiene), say to `/clear` first.
 
-3. **Name the boundary move.** Say whether to continue in this session, `/clear`, `/handoff`, use a subagent, or `/compact` before the next step (see Phase boundaries).
-
-Keep the answer short: phase, next step, boundary move, one line of reasoning each.
+Keep the answer short: phase and next step, one line of reasoning each.
 
 ## Entry paths
 
@@ -44,23 +42,23 @@ For a ticket someone else wrote, triage checks the work isn't already built, rep
 ## The main flow: idea → pull request
 
 1. **`/grill-with-docs`** sharpens the idea by interview, recording terms in the glossary and hard-to-reverse decisions as DRs (decision records) as they land.
-2. **Detour, only if a question needs a runnable answer** (state, business logic, a UI you have to see): `/handoff` out, open a fresh session against that file, run `prototype`, then `/handoff` back what you learned. Facts from outside the repo go to `research` instead, which runs as a background agent. Both are detours inside the grilling, not stages after it.
+2. **Detour, only if a question needs a runnable answer** (state, business logic, a UI you have to see): send `prototype` to a subagent with the question it must answer, and fold its verdict back into the grilling. Facts from outside the repo go to `research` instead, which runs as a background agent. Both are detours inside the grilling, not stages after it.
 3. **Branch: is this a multi-session build?**
-   - **Yes** → **`/to-spec`** writes the spec to a dated file in the repo, settling the test seams with the user, and opens it as its own pull request. Then **`/to-tickets`** splits it into tracer-bullet tickets with blocking edges, in the repo's ticket conventions. Then **`/implement`** one ticket at a time, blockers first, **`/clear`ing between tickets**. Each ticket links the spec, so the last ticket's context is disposable.
+   - **Yes** → **`/to-spec`** writes the spec to a dated file in the repo, settling the test seams with the user, and opens it as its own pull request. Then **`/to-tickets`** splits it into tracer-bullet tickets with blocking edges, in the repo's ticket conventions. Then **`/implement`** one ticket at a time, blockers first: each opens its own pull request, then **`/clear`** before the next ticket. Each ticket links the spec and its PR carries the revisions, so once the PR is open the context is disposable.
    - **No** → **`/implement`** right here, in the same context window.
-4. **`/implement`** loads `codebase-design`, builds test-first with `tdd` at the agreed seams, runs the repo's lint, typecheck, and test commands, closes with `code-review` (Standards + Spec), and commits.
-5. **Pull request.** Call the Skill tool with "pr" to write the body. Then open the PR and handle review using the repo's conventions. This is where the flow ends.
+4. **`/implement`** loads `codebase-design`, builds test-first with `tdd` at the agreed seams, runs the repo's lint, typecheck, and test commands, closes with `code-review` (Standards + Spec), and opens the PR in the same session. Throughout, `work-log` records the hypothesis and every revision, which review, the PR body, and `/retro` read.
+5. **Pull request.** Handle review using the repo's conventions. This is where the flow ends.
 6. **`/retro`**, optional. After a build that went sideways, it looks back over the session and suggests changes to the agent's environment (pointers, automated checks, coding standards), not the code. Run it in the session it's looking back on, before you clear.
 
 ### Context hygiene
 
-Keep steps 1–3 in **one unbroken context window** (don't compact or clear until after `/to-tickets`) so the grilling, spec, and tickets all build on the same thinking. Each `/implement` then starts fresh, working from its ticket.
+There are two boundaries, and only two: **`/clear` after `/to-tickets`**, and **`/clear` after each ticket's PR is open**. Everywhere else, stay in one context window: each phase needs the one before it as a **primary source**, not a summary of it. Side tasks (prototype, research, review) go to subagents and report back into the window.
 
-The limit on this is the **[smart zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone)**: the window (~150k tokens on state-of-the-art models) within which the model still reasons sharply. If a session approaches it before `/to-tickets`, don't push on degraded; `/compact` at the nearest phase boundary and carry on.
+The one exception is the **[smart zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone)**: the window (~150k tokens on state-of-the-art models) within which the model still reasons sharply. If a session approaches it before a boundary, `/compact` with an instruction naming what the next step needs (`/compact we're about to write tickets from this spec`), and carry on.
 
 ## Routes off the main flow
 
-- **Something's broken** → `diagnosing-bugs`. For the hard ones: the bug that resists a first glance, the intermittent flake, the regression between two known-good states. It builds a feedback loop that goes red on *this* bug before theorising, then fixes with a regression test. If the real finding is that there's no good seam to lock the bug down, that's a job for `/improve-codebase-architecture`.
+- **Something's broken** → `diagnosing-bugs`. For the hard ones: the bug that resists a first glance, the intermittent flake, the regression between two known-good states. It builds a feedback loop that goes red on *this* bug before theorising, then fixes with a regression test held to `tdd`'s standard. If the real finding is that there's no good seam to lock the bug down, that's a job for `/improve-codebase-architecture`.
 - **A huge, foggy effort, too big for one session** → `/wayfinder`. It charts a map of decision tickets and resolves them one per session, producing decisions, not deliverables. When the map clears, it joins the main flow at `/to-spec`. Save it for exactly that, never a well-scoped feature.
 - **Codebase upkeep** → `/improve-codebase-architecture` surveys for deepening opportunities. Picking one generates an idea that enters the main flow at `/grill-with-docs`.
 
@@ -70,18 +68,6 @@ Two model-invoked references that the skills above pull in. Reach for them direc
 
 - **`domain-modeling`**: the project's domain language. Challenge a fuzzy term, resolve an overloaded word, record a hard-to-reverse decision as a DR.
 - **`codebase-design`**: the deep-module vocabulary (module, interface, depth, seam, adapter, leverage, locality) for designing a module's shape. `/to-spec`, `/implement`, `tdd`, and `/improve-codebase-architecture` load it.
-
-## Phase boundaries
-
-A **phase** is a chunk of work inside a session: the grilling, the implementation, the QA. At the **boundary** between two of them there are five options:
-
-- **Continue**: stay put. Costs nothing, loses nothing.
-- **`/clear`**: empty the window, when nothing here matters to what's next.
-- **`/handoff`** writes a portable markdown file. Narrow: only for a **new harness**, a **new directory**, a **colleague**, or forking a side task **mid-phase**.
-- **Subagent**: send a tightly-scoped task to its own window and get a report back.
-- **`/compact`** compresses this context and seeds a fresh session with it. The **default**, at the bottom of the tree rather than the first reach.
-
-Read [PHASE-BOUNDARIES.md](PHASE-BOUNDARIES.md) for the ordered tree and the reasoning behind each branch. Make the decision **at** a boundary; mid-phase, continue or split the rest into subagents.
 
 ## Standalone
 
