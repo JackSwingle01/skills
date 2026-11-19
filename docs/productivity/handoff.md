@@ -1,3 +1,5 @@
+> **Archived.** This skill was removed from the plugin in v1.4.0 and is no longer maintained. Nothing replaces it: `dev-flow` now keeps each phase in one window and sends side tasks such as `prototype` to subagents, and when work must travel to a new harness or a colleague, asking the agent for a handoff document works without a skill. The page stays up for reference.
+
 ## What it does
 
 `handoff` compacts the conversation you are in into a **handoff document**: one markdown file, written to your OS's temporary directory rather than into the workspace, that a fresh [agent](https://www.aihero.dev/ai-coding-dictionary/agent) can read to pick the work up.
