@@ -36,9 +36,11 @@ A run has these steps, in order:
 2. Send a [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent) with a fresh context to scout the change: its blast radius, test coverage, existing patterns, how to validate it locally, and the existing behaviour it touches. That behaviour goes into the log's hypothesis.
 3. Design the change with [codebase-design](https://aihero.dev/skills-codebase-design) to fit the existing system: decide for each affected behaviour whether it stays, changes, or goes, break the work into stages, and pick an abstraction for each stage so it can be checked on its own.
 4. Send the design to a second fresh subagent for an adversarial review against the ticket and the scout's report, and log each change it causes.
-5. Drive [tdd](https://aihero.dev/skills-tdd) at the pre-agreed seams, one red-green slice at a time, typechecking and running single test files as it goes, then the full suite once.
-6. Validate each acceptance criterion end to end, logging any it couldn't validate as a follow-up.
-7. Commit, run [code-review](https://aihero.dev/skills-code-review), commit its fixes separately, and open the pull request with [pr](https://aihero.dev/skills-pr).
+5. Drive [tdd](https://aihero.dev/skills-tdd) at the pre-agreed seams, one red-green slice at a time.
+6. Typecheck often, run single test files as it goes.
+7. Run the full test suite once, at the end.
+8. Validate each acceptance criterion end to end, logging any it couldn't validate as a follow-up.
+9. Commit, run [code-review](https://aihero.dev/skills-code-review), commit its fixes separately, and open the pull request with [pr](https://aihero.dev/skills-pr).
 
 One run covers one ticket. The tickets [to-tickets](https://aihero.dev/skills-to-tickets) produces are tracer-bullet vertical slices sized to fit a single fresh [context window](https://www.aihero.dev/ai-coding-dictionary/context-window), so the intended rhythm is: clear context, implement one ticket, commit, clear again. Each ticket is self-contained, so you can discard the previous ticket's context.
 
