@@ -19,7 +19,7 @@ Reach for it when the build is too big for one agent session and must be split a
 
 ## Prerequisites
 
-`to-spec` publishes the spec as an issue, so setup-matt-pocock-skills must first configure a tracker and the triage-label vocabulary for this repo. Either kind of tracker works: a real tracker like GitHub, or local markdown files under `.scratch/`, which work with no extra setup.
+`to-spec` publishes the spec as an issue, so the repo's `AGENTS.md`/`CLAUDE.md` must document a tracker and its conventions. Either kind of tracker works: a real tracker like GitHub, or local markdown files under `.scratch/`, which work with no extra setup.
 
 ## The spec is a decision record
 
