@@ -1,5 +1,21 @@
 # mattpocock-skills
 
+## 1.4.0
+
+### Minor Changes
+
+- [`a3a444c`](https://github.com/mattpocock/skills/commit/a3a444c677f3f8fe29cf5807b50d384a3f0e6c4b) Thanks [@claude](https://github.com/claude)! - **`implement`** gains a design phase before code. A fresh subagent scouts the change (blast radius, coverage, patterns, local validation, and the existing behaviour it affects), the design is shaped with `codebase-design` to fit the existing system, and a second fresh subagent reviews it adversarially. After the tests pass, each acceptance criterion is validated end to end. `code-review` now treats decisions made during the work as context to challenge, not spec. **`work-log`**'s hypothesis gains an `Affects:` line for the behaviour the scout finds. **`implement`** is now model-invoked, so a parent agent can tell a subagent to call it. **`tdd`** confirms its seams with the parent agent when it runs as a subagent with no user to ask.
+
+- [`a0f5e01`](https://github.com/mattpocock/skills/commit/a0f5e012e820e96e2c953d609853ec83b174a26a) Thanks [@claude](https://github.com/claude)! - New model-invoked **`work-log`** skill. The per-ticket log of hypothesis, revisions, and follow-ups moves out of `implement` into its own skill, so `implement`, `tdd`, `code-review`, `pr`, and `retro` share one definition of where the log lives and what its lines mean.
+
+### Patch Changes
+
+- [#1363](https://github.com/mattpocock/skills/pull/1363) [`5ae4816`](https://github.com/mattpocock/skills/commit/5ae481693d13b37d4d2c2c92d0b66d299c93e695) Thanks [@mattpocock](https://github.com/mattpocock)! - `chief-of-staff` now looks for a shared wiki before starting its own. It also runs `retro` on about one in five of its subagents' sessions, the ones where something went wrong first, and acts on the findings itself, and runs `to-spec`, `to-tickets` and `implement` for large chunks of work, reading each skill by relative path so they can stay user-invoked.
+
+- [#1453](https://github.com/mattpocock/skills/pull/1453) [`9201b96`](https://github.com/mattpocock/skills/commit/9201b96da4af2d663faa13bef984095bb69059b1) Thanks [@mattpocock](https://github.com/mattpocock)! - `software-factory` now installs with `npx skills add`: its description is quoted, so strict YAML parsers no longer read the colon in it as a nested mapping and skip the skill.
+
+- [#1316](https://github.com/mattpocock/skills/pull/1316) [`4ae2317`](https://github.com/mattpocock/skills/commit/4ae2317ddb22b046e26455e4f9c9b3aaaf62212d) Thanks [@mattpocock](https://github.com/mattpocock)! - Add `software-factory`, an in-progress user-invoked reference skill: a glossary for designing a software factory (tasks, runs, runners, triggers, and the services they plug into), example tasks grouped by the problem they solve, surveys of the products that fill each slot (ticket trackers, git hosts, runners, observability platforms), and the questions that finish a design. Call it alongside a grilling session.
+
 ## 1.3.2
 
 ### Patch Changes
