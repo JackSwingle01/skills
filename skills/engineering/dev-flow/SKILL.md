@@ -54,7 +54,7 @@ For a ticket someone else wrote, triage checks the work isn't already built, rep
 
 There are two boundaries, and only two: **`/clear` after `/to-tickets`**, and **`/clear` after each ticket's PR is open**. Everywhere else, stay in one context window: each phase needs the one before it as a **primary source**, not a summary of it. Side tasks (prototype, research, scouting, review) go to subagents and report back into the window.
 
-The one exception is the **[smart zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone)**: the window (~150k tokens on state-of-the-art models) within which the model still reasons sharply. If a session approaches it before a boundary, `/compact` with an instruction naming what the next step needs (`/compact we're about to write tickets from this spec`), and carry on.
+The one exception is the **smart zone**: the window (~150k tokens on state-of-the-art models) within which the model still reasons sharply. If a session approaches it before a boundary, `/compact` with an instruction naming what the next step needs (`/compact we're about to write tickets from this spec`), and carry on.
 
 ## Routes off the main flow
 

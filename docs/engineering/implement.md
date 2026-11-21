@@ -40,7 +40,9 @@ A run has these steps, in order:
 6. Typecheck often, run single test files as it goes.
 7. Run the full test suite once, at the end.
 8. Validate each acceptance criterion end to end, logging any it couldn't validate as a follow-up.
-9. Commit, run [code-review](https://aihero.dev/skills-code-review), commit its fixes separately, and open the pull request with [pr](https://aihero.dev/skills-pr).
+9. Commit to the current branch.
+10. Run [code-review](https://aihero.dev/skills-code-review) against the branch's base, passing it the work log and treating decisions made during the work as context to challenge, not spec. Commit its fixes separately.
+11. Open the pull request with [pr](https://aihero.dev/skills-pr).
 
 One run covers one ticket. The tickets [to-tickets](https://aihero.dev/skills-to-tickets) produces are tracer-bullet vertical slices sized to fit a single fresh [context window](https://www.aihero.dev/ai-coding-dictionary/context-window), so the intended rhythm is: clear context, implement one ticket, commit, clear again. Each ticket is self-contained, so you can discard the previous ticket's context.
 
