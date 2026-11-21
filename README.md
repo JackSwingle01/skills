@@ -18,7 +18,7 @@ git clone https://github.com/JackSwingle01/skills.git
 skills/scripts/link-skills.sh
 ```
 
-This symlinks every skill outside `deprecated/` and `misc/` into `~/.claude/skills` and `~/.agents/skills`, so a `git pull` updates them. Re-run it after adding, removing or renaming a skill.
+This symlinks every skill outside `misc/` into `~/.claude/skills` and `~/.agents/skills`, so a `git pull` updates them. Re-run it after adding, removing or renaming a skill.
 
 ### As a plugin
 
