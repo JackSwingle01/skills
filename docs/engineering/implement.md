@@ -2,7 +2,7 @@
 
 `implement` builds work that has already been decided. You point it at a [ticket](https://www.aihero.dev/ai-coding-dictionary/ticket), a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), or the plan you just agreed in the conversation, and it scouts the change, designs it to fit the existing system, writes the code test-first with [tdd](https://aihero.dev/skills-tdd), validates the acceptance criteria end to end, runs [code-review](https://aihero.dev/skills-code-review), and opens a pull request.
 
-It never reopens the plan. There is no interview and no clarifying round: whatever was settled upstream is the input. The design phase decides how to build it, not what to build, and a change to existing behaviour that the ticket didn't ask for goes back to you as a question rather than into the code. That is what separates it from typing "build this" at a fresh [agent](https://www.aihero.dev/ai-coding-dictionary/agent), which often redesigns the work while it builds it.
+It never reopens the plan. There is no interview and no clarifying round: whatever was settled upstream is the input. The design phase decides how to build it, not what to build, and it flags any change to existing behaviour that the ticket didn't ask for. That is what separates it from typing "build this" at a fresh [agent](https://www.aihero.dev/ai-coding-dictionary/agent), which often redesigns the work while it builds it.
 
 ## When to reach for it
 
@@ -34,9 +34,9 @@ A run has these steps, in order:
 
 1. Read the ticket or spec and start the work log.
 2. Design:
-   - **a. Scout.** Send a [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent) with a fresh context to scout the change: its blast radius, test coverage, existing patterns, how to validate it locally, and the existing behaviour it touches. That behaviour goes into the log's hypothesis.
-   - **b. Design.** Use [codebase-design](https://aihero.dev/skills-codebase-design) to fit the change to the existing system: decide for each affected behaviour whether it stays, changes, or goes, break the work into stages, and pick an abstraction for each stage so it can be checked on its own.
-   - **c. Review.** Send the design to a second fresh subagent for an adversarial review against the ticket and the scout's report, and log each change it causes.
+   - **a. Scout.** Start a [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent) with a fresh context window to scout the change: its blast radius, test coverage, and existing patterns, how it can be validated locally, and the existing behavior it affects, grounded in real usage where logs or data allow.
+   - **b. Design.** Call [codebase-design](https://aihero.dev/skills-codebase-design) and design the change to fit the existing system, not to sit on top of it. Decide for each affected behavior whether it stays, changes, or goes, and flag any change the ticket didn't ask for. Then design in two steps: decomposition (break the work into stages) and encapsulation (pick the right abstraction for each stage at every level, from modules down to functions and data structures, so each stage can be verified on its own). Those verification points are the test seams.
+   - **c. Review.** Start a subagent with a fresh context window for an adversarial design review against the ticket and the scout's report. Weigh each finding on its merits rather than accepting it, and log each change made as a Revised line.
 3. Drive [tdd](https://aihero.dev/skills-tdd) at the pre-agreed seams, one red-green slice at a time.
 4. Typecheck often, run single test files as it goes.
 5. Run the full test suite once, at the end.
@@ -50,8 +50,6 @@ One run covers one ticket. The tickets [to-tickets](https://aihero.dev/skills-to
 ## Pre-agreed seams
 
 The skill's central idea is the **seam**, the public boundary you observe behaviour at without reaching inside. Tests live at seams. When the seam is agreed before any code exists, the tests last, and you can rewrite the implementation underneath without changing them.
-
-The stages from the design step are checkpoints, not seams. A design with five stages does not get five test seams: tests stay at the few seams the spec agreed, and the checkpoints are where the agent checks its own progress.
 
 The "pre-agreed" part matters, and it is also the skill's weakest point. Nothing inside `implement` agrees the seams. `tdd` is the skill that asks, and it refuses to write a test at an unconfirmed seam. So in practice the agreement happens either upstream in the spec, or in the first exchange of the run. If it happens nowhere, the run becomes "just write the code" and nothing warns you. Naming the seams in the spec is what stops that.
 
@@ -87,7 +85,7 @@ The agent resolved `#2` against another numbered list in context, such as a todo
 
 - The session opens by reading the ticket or spec and restating what it will build, rather than asking you what to build.
 - Two fresh subagents appear in the trace before any code: one scouting the change, one reviewing the design.
-- The work log's hypothesis has an `Affects:` line naming existing behaviour, and design-review changes show up as `Revised (review):` lines.
+- The work log's hypothesis has an `Affects:` line naming existing behaviour, and design-review changes show up as `Revised` lines.
 - You can see an actual `tdd` Skill tool call in the trace, not just tests appearing in the diff.
 - Typechecks and single test files run repeatedly during the run, and the full suite runs once near the end.
 - Every acceptance criterion is either validated end to end or listed as a follow-up with what was missing.
