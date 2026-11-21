@@ -26,7 +26,7 @@ The same-session case is worth naming because the skill's own first line doesn't
 
 `implement` follows the repo's branch conventions. Where there are none, it commits to the branch you are on without asking, so check that branch before you start.
 
-If the tickets came from [to-tickets](../../skills/engineering/to-tickets/SKILL.md), setup-matt-pocock-skills configured the tracker they live on. `code-review` reads the same configuration to find the originating spec at close-out.
+If the tickets came from [to-tickets](../../skills/engineering/to-tickets/SKILL.md), they live on the tracker your `AGENTS.md`/`CLAUDE.md` documents. `code-review` reads the same conventions to find the originating spec at close-out.
 
 ## What one run does
 
@@ -61,7 +61,7 @@ Correct, and expected. `implement` has no completion step. It ends at the commit
 
 **Can I point it at all my tickets at once, or run several in parallel?**
 
-Not with `/implement`: one invocation, one ticket. For a whole spec in one run, use implement-spec, which gives each ticket on the ready frontier to a subagent in its own worktree, then merges the results onto one integration branch. Running several `/implement` sessions side by side in one checkout is worse than unsupported. One field report describes a `git commit --amend` in one session landing on another session's commit, a stash vanishing from `refs/stash`, and commits landing on the wrong branch, all in a single afternoon across three issues. The sessions share one working directory, one index, and one HEAD. Users work around this with git worktrees, but `refs/stash` is shared across worktrees too, so worktrees alone do not fix the stash case.
+Not with `/implement`: one invocation, one ticket. For a whole spec, run one `/implement` per ticket. Running several `/implement` sessions side by side in one checkout is worse than unsupported. One field report describes a `git commit --amend` in one session landing on another session's commit, a stash vanishing from `refs/stash`, and commits landing on the wrong branch, all in a single afternoon across three issues. The sessions share one working directory, one index, and one HEAD. Users work around this with git worktrees, but `refs/stash` is shared across worktrees too, so worktrees alone do not fix the stash case.
 
 **Does it open a pull request, or just commit?**
 

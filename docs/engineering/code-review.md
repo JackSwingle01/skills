@@ -30,7 +30,7 @@ The Spec axis needs a spec to exist and be findable. It looks in this order:
 3. A spec file under `docs/`, `specs/`, or `.scratch/` matching the branch or feature name.
 4. Asking you.
 
-Step 1 depends on the tracker doc, which setup-matt-pocock-skills writes. Without it the axis still works if you hand it a path. With no spec at all, the skill skips the Spec sub-agent and the report says "no spec available" rather than inventing requirements.
+Step 1 depends on the tracker conventions in the repo's `AGENTS.md`/`CLAUDE.md`. Without it the axis still works if you hand it a path. With no spec at all, the skill skips the Spec sub-agent and the report says "no spec available" rather than inventing requirements.
 
 ## The two axes
 
@@ -92,7 +92,7 @@ No. It diffs `<fixed-point>...HEAD`. The three-dot form measures from the merge-
 
 `code-review` is the review step near the tail of the build chain: `grill-with-docs → to-spec → to-tickets → implement → code-review → retro`. It also stands alone on any branch or PR you point it at.
 
-- [implement](../../skills/engineering/implement/SKILL.md) is the closest neighbour. It drives the build and calls this skill as its own closing review before committing. implement-spec does the same once, over the whole integration branch.
+- [implement](../../skills/engineering/implement/SKILL.md) is the closest neighbour. It drives the build and calls this skill as its own closing review before committing.
 - [retro](../../skills/engineering/retro/SKILL.md) comes after it and tunes it. When a session shows the review missing a class of mistake, `retro` proposes the check or the `CODING_STANDARDS.md` rule the Standards axis then reads.
 - [pr](../../skills/engineering/pr/SKILL.md) writes the pull request body once the reviewed work goes up.
 - [to-spec](../../skills/engineering/to-spec/SKILL.md) and [to-tickets](../../skills/engineering/to-tickets/SKILL.md) produce the document the Spec axis checks against, so a vague spec makes that axis vague.

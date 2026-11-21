@@ -1,25 +1,19 @@
 # Contributing
 
-Every issue is judged against the bar in [`SCOPE.md`](./SCOPE.md). Read it first.
-
-## Where each request goes
+This is a personal fork of [mattpocock/skills](https://github.com/mattpocock/skills). Issues are judged against [`SCOPE.md`](./SCOPE.md).
 
 | You have | Go to |
 | --- | --- |
-| A bug in a skill | [Bug issue](https://github.com/mattpocock/skills/issues/new?template=bug.yml) |
-| A change to an existing skill | [Idea or feedback issue](https://github.com/mattpocock/skills/issues/new?template=idea.yml) |
-| A question, or "how do I...?" | [Discussions: Q&A](https://github.com/mattpocock/skills/discussions/categories/q-a) |
-| An idea for a new skill, or a skill to donate | [Discussions: Ideas](https://github.com/mattpocock/skills/discussions/categories/ideas) |
-| Support for another harness or issue tracker | [Discussions: Ideas](https://github.com/mattpocock/skills/discussions/categories/ideas), after you read [`.out-of-scope/`](./.out-of-scope) |
+| A bug in a skill | [Bug issue](https://github.com/JackSwingle01/skills/issues/new?template=bug.yml) |
+| A change to an existing skill | [Idea or feedback issue](https://github.com/JackSwingle01/skills/issues/new?template=idea.yml) |
+| A problem that also exists upstream | [mattpocock/skills](https://github.com/mattpocock/skills), under its own contributing rules |
 
 Pull requests are open to collaborators only, so describe the fix in an issue instead.
 
 ## Issues written with AI
 
-Agents are welcome to help, but you post the issue, so you own it:
-
-- **One problem per issue.** Several findings from one session are several issues, or none.
+- **One problem per issue.**
 - **Short.** If it does not fit on one screen, cut it.
 - **Repro first.** The steps that show the problem come before any analysis.
-- **No pasted specs.** No full proposals, plans, or rewritten `SKILL.md` files. Describe the problem; the fix is ours to design.
-- **Not your project's issues.** If your agent files the specs or tickets for your own project here, it has the wrong repo. Name your project's issue tracker in that project's `AGENTS.md` or `CLAUDE.md`, which the skills read.
+- **No pasted specs.** Describe the problem, not a rewritten `SKILL.md`.
+- **Not your project's issues.** If your agent files your own project's specs or tickets here, it has the wrong repo. Name your project's issue tracker in that project's `AGENTS.md` or `CLAUDE.md`.
