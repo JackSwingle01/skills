@@ -35,9 +35,9 @@ A run has these steps, in order:
 1. Read the ticket or spec and start the work log.
 2. Design:
    - **a. Scout.** Start a [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent) with a fresh context window to scout the change: its blast radius, test coverage, and existing patterns, how it can be validated locally, and the existing behavior it affects, grounded in real usage where logs or data allow.
-   - **b. Design.** Call [codebase-design](https://aihero.dev/skills-codebase-design) and design the change to fit the existing system, not to sit on top of it. Decide for each affected behavior whether it stays, changes, or goes, and flag any change the ticket didn't ask for. Then design in two steps: decomposition (break the work into stages) and encapsulation (pick the right abstraction for each stage at every level, from modules down to functions and data structures, so each stage can be verified on its own). Those verification points are the test seams.
+   - **b. Design.** Call [codebase-design](https://aihero.dev/skills-codebase-design) and design the change to fit the existing system, not to sit on top of it. Decide for each affected behavior whether it stays, changes, or goes, and flag any change the ticket didn't ask for. Then design in two steps: decomposition (break the work into stages) and encapsulation (pick the right abstraction for each stage at every level, from modules down to functions and data structures, so each stage can be verified on its own).
    - **c. Review.** Start a subagent with a fresh context window for an adversarial design review against the ticket and the scout's report. Weigh each finding on its merits rather than accepting it, and log each change made as a Revised line.
-3. Drive [tdd](https://aihero.dev/skills-tdd) at the pre-agreed seams, one red-green slice at a time.
+3. Drive [tdd](https://aihero.dev/skills-tdd) at the pre-agreed seams, one red-green slice at a time. If the spec names seams, it uses them unless there is a good reason not to, and logs any seam it adds or changes as a Revised line.
 4. Typecheck often, run single test files as it goes.
 5. Run the full test suite once, at the end.
 6. Validate each acceptance criterion end to end, logging any it couldn't validate as a follow-up.
