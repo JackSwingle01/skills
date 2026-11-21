@@ -46,13 +46,13 @@ For a ticket someone else wrote, triage checks the work isn't already built, rep
 3. **Branch: is this a multi-session build?**
    - **Yes** → **`/to-spec`** writes the spec to a dated file in the repo, settling the test seams with the user, and opens it as its own pull request. Then **`/to-tickets`** splits it into tracer-bullet tickets with blocking edges, in the repo's ticket conventions. Then **`/implement`** one ticket at a time, blockers first: each opens its own pull request, then **`/clear`** before the next ticket. Each ticket links the spec and its PR carries the revisions, so once the PR is open the context is disposable.
    - **No** → **`/implement`** right here, in the same context window.
-4. **`/implement`** loads `codebase-design`, builds test-first with `tdd` at the agreed seams, runs the repo's lint, typecheck, and test commands, closes with `code-review` (Standards + Spec), and opens the PR in the same session. Throughout, `work-log` records the hypothesis and every revision, which review, the PR body, and `/retro` read.
+4. **`/implement`** sends a subagent to scout the change, designs it with `codebase-design` to fit the existing system, sends the design to a subagent for adversarial review, builds test-first with `tdd` at the agreed seams, runs the repo's lint, typecheck, and test commands, validates each acceptance criterion end to end, closes with `code-review` (Standards + Spec), and opens the PR in the same session. Throughout, `work-log` records the hypothesis and every revision, which review, the PR body, and `/retro` read.
 5. **Pull request.** Handle review using the repo's conventions. This is where the flow ends.
 6. **`/retro`**, optional. After a build that went sideways, it looks back over the session and suggests changes to the agent's environment (pointers, automated checks, coding standards), not the code. Run it in the session it's looking back on, before you clear.
 
 ### Context hygiene
 
-There are two boundaries, and only two: **`/clear` after `/to-tickets`**, and **`/clear` after each ticket's PR is open**. Everywhere else, stay in one context window: each phase needs the one before it as a **primary source**, not a summary of it. Side tasks (prototype, research, review) go to subagents and report back into the window.
+There are two boundaries, and only two: **`/clear` after `/to-tickets`**, and **`/clear` after each ticket's PR is open**. Everywhere else, stay in one context window: each phase needs the one before it as a **primary source**, not a summary of it. Side tasks (prototype, research, scouting, review) go to subagents and report back into the window.
 
 The one exception is the **[smart zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone)**: the window (~150k tokens on state-of-the-art models) within which the model still reasons sharply. If a session approaches it before a boundary, `/compact` with an instruction naming what the next step needs (`/compact we're about to write tickets from this spec`), and carry on.
 

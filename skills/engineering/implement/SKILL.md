@@ -10,16 +10,27 @@ If the user passes a ticket reference, fetch it from the issue tracker and state
 
 If the repo requires a ticket for every change (check `AGENTS.md`/`CLAUDE.md`) and there isn't one yet, create it first using the repo's conventions. Follow the repo's branch conventions too.
 
-Before writing code, call the Skill tool with "codebase-design" for the vocabulary of modules, interfaces, depth, and seams.
-
 Call the Skill tool with "work-log" and keep this ticket's log from before the first line of code.
+
+Before designing, start a sub-agent with a fresh context window to scout the change: its blast radius, test coverage, and existing patterns, how it can be validated locally, and the existing behavior it affects, grounded in real usage where logs or data allow. Record that behavior in the hypothesis's `Affects:` line.
+
+Before writing code, call the Skill tool with "codebase-design" and design the change to fit the existing system, not to sit on top of it. Decide for each affected behavior whether it stays, changes, or goes. A change the ticket didn't ask for changes what the ticket promises, so it goes to the user as `work-log` describes. Then design in two steps:
+
+1. Decomposition: break the work into stages.
+2. Encapsulation: pick the right abstraction for each stage at every level, from modules down to functions and data structures, so each stage can be verified on its own.
+
+Those verification points are checkpoints, not test seams. Test at the seams the spec agreed; with no spec, propose seams from the checkpoints and confirm them as `tdd` asks, preferring as few as possible.
+
+Before writing code, start a sub-agent with a fresh context window for an adversarial design review against the ticket and the scout's report. Weigh each finding on its merits rather than accepting it, and log each change you make as a `Revised (review):` line.
 
 Call the Skill tool with "tdd" where possible, at pre-agreed seams.
 
 Use whatever lint, typecheck, and test commands the repo has. Run typechecking and single test files regularly, and the full test suite once at the end.
 
+After the tests pass, validate each acceptance criterion end to end, and log any you couldn't validate as a `Follow-up:` with what was missing.
+
 Commit your work to the current branch, following the repo's commit conventions.
 
-Then call the Skill tool with "code-review" against the branch's base, passing it the work log's path, and commit its fixes separately. The two commits are a measurement: across runs, the share that needed a review commit shows how well the implementation and the review are each doing their job.
+Then call the Skill tool with "code-review" against the branch's base, passing it the work log's path, with decisions made during the work as context to challenge, not spec. Commit its fixes separately. The two commits are a measurement: across runs, the share that needed a review commit shows how well the implementation and the review are each doing their job.
 
 Finally, call the Skill tool with "pr", passing it the work log's path, and open the pull request in this session using the repo's conventions.
