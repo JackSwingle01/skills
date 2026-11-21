@@ -1,0 +1,3 @@
+interface:
+  display_name: "Verification"
+  short_description: "Pick checks by risk, run them by cadence"

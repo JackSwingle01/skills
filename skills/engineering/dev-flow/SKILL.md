@@ -68,6 +68,7 @@ Two model-invoked references that the skills above pull in. Reach for them direc
 
 - **`domain-modeling`**: the project's domain language. Challenge a fuzzy term, resolve an overloaded word, record a hard-to-reverse decision as a DR.
 - **`codebase-design`**: the deep-module vocabulary (module, interface, depth, seam, adapter, leverage, locality) for designing a module's shape. `/to-spec`, `/implement`, `tdd`, and `/improve-codebase-architecture` load it.
+- **`verification`**: which kind of check fits a risk and when to run it, from types to canaries. `/implement`, `tdd`, and `/retro` load it.
 
 ## Standalone
 

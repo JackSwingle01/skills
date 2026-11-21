@@ -55,7 +55,7 @@ Start from the user's problem, not the factory: untriaged tickets, PRs waiting f
 
 Every trigger is an accelerator. Accelerators without brakes make a slop cannon. There are three brakes:
 
-- **Automated checks**: deterministic gates (types, lint, tests) that every run must pass.
+- **Automated checks**: deterministic gates (types, lint, tests) that every run must pass. Call the Skill tool with "verification" to choose them.
 - **Automated review**: a separate run that reads the diff cold against the codebase's standards and the ticket, when there is one.
 - **Human review**: a human reads the PR before it merges; what it catches becomes new automated checks and sharper automated review.
 
