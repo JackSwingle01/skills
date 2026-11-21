@@ -12,7 +12,6 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
 - **[to-spec](./to-spec/SKILL.md)**: Turn the current conversation into a spec, saved as a dated file in the repo.
 - **[to-tickets](./to-tickets/SKILL.md)**: Break any plan, spec, or conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published in the repo's ticket conventions.
-- **[implement](./implement/SKILL.md)**: Build the work described by a spec or set of tickets, driving `/tdd` at pre-agreed seams and closing out with `/code-review` before committing.
 - **[wayfinder](./wayfinder/SKILL.md)**: Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on the issue tracker, resolved one at a time until the way to the destination is clear.
 - **[retro](./retro/SKILL.md)**: Suggest improvements to the coding agent's environment (navigation, automated checks, coding standards, steering files, tooling) after a session, most severe first.
 
@@ -20,6 +19,7 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 
 Model- or user-reachable (rich trigger phrasing so the model can reach for them).
 
+- **[implement](./implement/SKILL.md)**: Build the work described by a spec or set of tickets: scout and design the change, drive `/tdd` at pre-agreed seams, close out with `/code-review`, and open the pull request. A parent agent can hand it to a subagent.
 - **[prototype](./prototype/SKILL.md)**: Build a throwaway prototype to answer a design question: a single shareable HTML file for state/logic, or several toggleable UI variations.
 
 - **[diagnosing-bugs](./diagnosing-bugs/SKILL.md)**: Disciplined diagnosis loop for hard bugs and performance regressions: build a feedback loop that goes red on this bug → minimise → hypothesise → instrument → fix → regression-test.

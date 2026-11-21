@@ -6,7 +6,7 @@ It never reopens the plan. There is no interview and no clarifying round: whatev
 
 ## When to reach for it
 
-You invoke this by typing `/implement` yourself, and the agent won't reach for it on its own. It ships with `disable-model-invocation: true`, so no other skill can call it either. Wherever [ask-matt](https://aihero.dev/skills-ask-matt) or [to-tickets](https://aihero.dev/skills-to-tickets) says "then `/implement` per ticket", that is an instruction to you, not something the agent will do unprompted.
+Type `/implement`, or the agent reaches for it when asked to build a ticket or spec. Because it is model-invoked, an orchestrating agent can hand a ticket to a [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent) and tell it to call `implement`, so one parent can work through a set of tickets without you typing the command for each. When it runs as a subagent, [tdd](https://aihero.dev/skills-tdd) confirms its seams with the parent agent instead of with you.
 
 Where the work currently lives decides whether this is the right skill:
 

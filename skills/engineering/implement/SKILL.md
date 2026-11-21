@@ -1,7 +1,6 @@
 ---
 name: implement
-description: "Implement a piece of work based on a spec or set of tickets."
-disable-model-invocation: true
+description: "Implement a piece of work based on a spec or set of tickets: scout, design, build test-first, review, and open a pull request. Use when the user or a parent agent asks to implement, build, or ship a ticket, issue, or spec, or when an orchestrating agent hands a subagent a ticket to build."
 ---
 
 Implement the work described by the user in the spec or tickets.
