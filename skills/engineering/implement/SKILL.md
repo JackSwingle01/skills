@@ -20,9 +20,11 @@ Before writing code, call the Skill tool with "codebase-design" and design the c
 
 Before writing code, start a sub-agent with a fresh context window for an adversarial design review against the ticket and the scout's report. Weigh each finding on its merits rather than accepting it, and log each change you make as a Revised line.
 
+Call the Skill tool with "verification" to choose a check for each risk and when to run it.
+
 Call the Skill tool with "tdd" where possible, at pre-agreed seams. If the spec names seams, use them unless there is a good reason not to, and log any seam you add or change as a Revised line.
 
-Use whatever lint, typecheck, and test commands the repo has. Run typechecking and single test files regularly, and the full test suite once at the end.
+Use whatever lint, typecheck, and test commands the repo has, at `verification`'s cadence.
 
 After the tests pass, validate each acceptance criterion end to end, and log any you couldn't validate as a Follow-up with what was missing.
 
