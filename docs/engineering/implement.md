@@ -1,8 +1,8 @@
 ## What it does
 
-`implement` builds work that has already been decided. You point it at a [ticket](https://www.aihero.dev/ai-coding-dictionary/ticket), a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), or the plan you just agreed in the conversation, and it writes the code, drives [tdd](https://aihero.dev/skills-tdd) at the seams, typechecks as it goes, runs [code-review](https://aihero.dev/skills-code-review) at the end, and commits to the current branch.
+`implement` builds work that has already been decided. You point it at a [ticket](https://www.aihero.dev/ai-coding-dictionary/ticket), a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), or the plan you just agreed in the conversation, and it scouts the change, designs it to fit the existing system, writes the code test-first with [tdd](https://aihero.dev/skills-tdd), validates the acceptance criteria end to end, runs [code-review](https://aihero.dev/skills-code-review), and opens a pull request.
 
-It never reopens the plan. There is no interview, no clarifying round, no proposal of a different approach. Whatever was settled upstream is the input, and the skill's whole job is to turn that into a commit. That is what separates it from typing "build this" at a fresh [agent](https://www.aihero.dev/ai-coding-dictionary/agent), which often redesigns the work while it builds it.
+It never reopens the plan. There is no interview and no clarifying round: whatever was settled upstream is the input. The design phase decides how to build it, not what to build, and a change to existing behaviour that the ticket didn't ask for goes back to you as a question rather than into the code. That is what separates it from typing "build this" at a fresh [agent](https://www.aihero.dev/ai-coding-dictionary/agent), which often redesigns the work while it builds it.
 
 ## When to reach for it
 
@@ -24,7 +24,7 @@ The same-session case is worth naming because the skill's own first line doesn't
 
 ## Prerequisites
 
-`implement` commits to the branch you are on. It does not create one, and it does not ask. Check you are on the branch you want the work on before you start.
+`implement` follows the repo's branch conventions. Where there are none, it commits to the branch you are on without asking, so check that branch before you start.
 
 If the tickets came from [to-tickets](https://aihero.dev/skills-to-tickets), [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) configured the tracker they live on. `code-review` reads the same configuration to find the originating spec at close-out.
 
@@ -64,13 +64,13 @@ Correct, and expected. `implement` has no completion step. It ends at the commit
 
 Not with `/implement`: one invocation, one ticket. For a whole spec in one run, use [implement-spec](https://aihero.dev/skills-implement-spec), which gives each ticket on the ready frontier to a [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent) in its own worktree, then merges the results onto one integration branch. Running several `/implement` sessions side by side in one checkout is worse than unsupported. One field report describes a `git commit --amend` in one session landing on another session's commit, a stash vanishing from `refs/stash`, and commits landing on the wrong branch, all in a single afternoon across three issues. The sessions share one working directory, one index, and one HEAD. Users work around this with git worktrees, but `refs/stash` is shared across worktrees too, so worktrees alone do not fix the stash case.
 
-**Can it open a pull request instead of committing?**
+**Does it open a pull request, or just commit?**
 
-Not built in. It commits straight to the current branch. Several people find this too eager, because the code lands before they can verify it works. There is no configuration flag and no PR mode. People override it in the invocation ("commit to a branch and open a PR") or by editing their local copy of the skill. When the agent does write the PR, [pr](https://aihero.dev/skills-pr) shapes its body.
+Both. It commits the implementation, commits the review's fixes separately, then calls [pr](https://aihero.dev/skills-pr) and opens the pull request in the same session, with the work log's revisions and follow-ups in the body. The split commits are deliberate: across runs, the share of tickets that needed a review commit measures how well the build and the review are each doing.
 
 **`code-review` says it cannot see my changes.**
 
-`code-review` reviews `git diff <fixed-point>...HEAD`, which excludes staged and working-tree changes. `implement` runs it before committing, so unless an interim commit already exists there is nothing in that diff to review. Multiple people have reported this and it is unfixed on both sides. Commit first, then review against the point you branched from.
+`code-review` reviews `git diff <fixed-point>...HEAD`, which excludes staged and working-tree changes. `implement` now commits before it reviews, so this should no longer happen inside a run. If you run `code-review` yourself, commit first, then review against the point you branched from.
 
 Separately, some people do not want the review inside the run at all, because an agent reviewing the code it just wrote is biased toward its own solution. Running [code-review](https://aihero.dev/skills-code-review) in a fresh session against a fixed point is a valid alternative. The same bias is why that skill runs its two axes in separate sub-agents.
 
@@ -85,9 +85,12 @@ The agent resolved `#2` against another numbered list in context, such as a todo
 ## It's working if
 
 - The session opens by reading the ticket or spec and restating what it will build, rather than asking you what to build.
+- Two fresh subagents appear in the trace before any code: one scouting the change, one reviewing the design.
+- The work log's hypothesis has an `Affects:` line naming existing behaviour, and design-review changes show up as `Revised (review):` lines.
 - You can see an actual `tdd` Skill tool call in the trace, not just tests appearing in the diff.
 - Typechecks and single test files run repeatedly during the run, and the full suite runs once near the end.
-- The run reaches a commit on your current branch without you prompting it to carry on.
+- Every acceptance criterion is either validated end to end or listed as a follow-up with what was missing.
+- The run reaches an open pull request without you prompting it to carry on.
 - The diff is one ticket's worth of change: a vertical slice through every layer, not several tickets swept together.
 
 ## Where it fits
