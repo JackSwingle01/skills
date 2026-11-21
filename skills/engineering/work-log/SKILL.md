@@ -20,6 +20,7 @@ The log holds only these lines, appended as they happen, in `GLOSSARY.md` terms:
 
 Hypothesis:
 - Changes: <modules>
+- Affects: <existing behavior the change touches>
 - Stays green: <tests or suites>
 - First red: <test> fails on <symptom>
 
@@ -34,7 +35,7 @@ Each line is a fact and an action, nothing else.
 |---|---|
 | `Hypothesis:` | Once, before any code. |
 | `Revised:` | The moment something you learn changes the approach, and for every pre-existing test you change. A better solution always beats the hypothesis: change the approach, then log it. |
-| `Revised (review):` | A review finding that changes the approach. |
+| `Revised (review):` | A review finding that changes the approach, from a design review before code or a code review after it. |
 | `Follow-up:` | Work found outside this ticket's scope, and anything you couldn't verify yourself, naming what would let an agent verify it next time: a harness, a fixture, access, or a check. |
 
 A revision that changes what the ticket or spec promises (a public interface, the scope, or a DR) is the user's decision; every other revision is yours. Bring the facts, the options, and your recommendation, worded so "yes" accepts it, and keep building any slice that doesn't depend on the answer. If the user is AFK and the choice is reversible, take your recommendation, log it, and continue.

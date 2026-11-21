@@ -1,6 +1,6 @@
 ## What it does
 
-`work-log` keeps one small file per ticket recording what the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) expected before it wrote any code, and every point where that expectation turned out wrong. It opens with a **hypothesis** (which modules change, which tests stay green, which test goes red first and why), then gains a `Revised:` line each time the approach changes and a `Follow-up:` line for work that belongs outside the ticket.
+`work-log` keeps one small file per ticket recording what the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) expected before it wrote any code, and every point where that expectation turned out wrong. It opens with a **hypothesis** (which modules change, which existing behaviour they touch, which tests stay green, which test goes red first and why), then gains a `Revised:` line each time the approach changes and a `Follow-up:` line for work that belongs outside the ticket.
 
 It records surprises, not progress. A log of "did X, then did Y" restates the diff. A log of "expected X, found Y, did Z" is the one thing the diff can't show you, and it is written at the moment of the surprise, so it never depends on the agent's memory of the [session](https://www.aihero.dev/ai-coding-dictionary/session).
 
