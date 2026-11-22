@@ -12,7 +12,7 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[improve-codebase-architecture](./improve-codebase-architecture/SKILL.md)**: Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.
 - **[to-spec](./to-spec/SKILL.md)**: Turn the current conversation into a spec, saved as a dated file in the repo.
 - **[to-tickets](./to-tickets/SKILL.md)**: Break any plan, spec, or conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published in the repo's ticket conventions.
-- **[implement-tickets](./implement-tickets/SKILL.md)**: Build a spec's tickets one after another in blocking order, each in a fresh subagent running `/implement`, while the session judges the seams each one proposes.
+- **[implement-tickets](./implement-tickets/SKILL.md)**: Build a spec's tickets as GitHub stacks, each ticket in a fresh subagent running `/implement` in its own worktree, independent stacks in parallel, while the session judges the seams each one proposes.
 - **[wayfinder](./wayfinder/SKILL.md)**: Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on the issue tracker, resolved one at a time until the way to the destination is clear.
 - **[retro](./retro/SKILL.md)**: Suggest improvements to the coding agent's environment (navigation, automated checks, coding standards, steering files, tooling) after a session, most severe first.
 

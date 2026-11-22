@@ -1,5 +1,5 @@
 interface:
   display_name: "Implement Tickets"
-  short_description: "Build a spec's tickets in blocking order"
+  short_description: "Build a spec's tickets as GitHub stacks"
 policy:
   allow_implicit_invocation: false
