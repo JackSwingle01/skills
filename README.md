@@ -122,6 +122,7 @@ Daily code work.
 - **[to-tickets](./skills/engineering/to-tickets/SKILL.md)**: Break any plan, spec, or conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published in the repo's ticket conventions.
 - **[wayfinder](./skills/engineering/wayfinder/SKILL.md)**: Plan a huge chunk of work, more than one agent session can hold, as a shared map of decision tickets on the issue tracker, and resolve them one at a time until the way to the destination is clear.
 - **[retro](./skills/engineering/retro/SKILL.md)**: Suggest improvements to the coding agent's environment (navigation, automated checks, coding standards, steering files, tooling) after a session, most severe first.
+- **[mechanize](./skills/engineering/mechanize/SKILL.md)**: Audit a skill or automated agent job, its text and its runs' transcripts, for mechanical work the model does that code should do instead, and propose moving each step into a pre-fetched brief or a bundled script.
 
 **Model-invoked**
 

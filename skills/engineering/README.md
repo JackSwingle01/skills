@@ -14,6 +14,7 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[to-tickets](./to-tickets/SKILL.md)**: Break any plan, spec, or conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published in the repo's ticket conventions.
 - **[wayfinder](./wayfinder/SKILL.md)**: Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on the issue tracker, resolved one at a time until the way to the destination is clear.
 - **[retro](./retro/SKILL.md)**: Suggest improvements to the coding agent's environment (navigation, automated checks, coding standards, steering files, tooling) after a session, most severe first.
+- **[mechanize](./mechanize/SKILL.md)**: Audit a skill or automated agent job for mechanical work (fetching, copying, counting, formatting) the model does that code should do, using a tally of its runs' tool calls, and propose moving each step into code.
 
 ## Model-invoked
 
