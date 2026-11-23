@@ -2,7 +2,7 @@
 
 `mechanize` audits a skill, or an automated job that runs one, for **mechanical** work: the steps the model does the same way every run, such as fetching what the next step needs, copying lines verbatim, counting, or filling a fixed template. It proposes moving each one into code, so the model spends its tokens only on judgment and writing.
 
-Every move trades the model's **flexibility** (adapting when an input changes shape or a call fails in a new way) for savings, so it weighs the two and rates each candidate high or low confidence. "Already well mechanized" is a normal answer.
+Every move trades the model's **flexibility** (adapting when an input changes shape or a call fails in a new way) for savings, so it weighs the two and rates each candidate high or low confidence. A step the skill's own text requires every run is high from one measured run; a step the model chose to take needs to recur across varied runs. "Already well mechanized" is a normal answer.
 
 It measures before it proposes. [transcript-tally](../../skills/engineering/transcript-tally/SKILL.md) counts the tool calls across several transcripts of the same job, and a call that appears in every run with only its arguments changing is the strongest evidence a step is mechanical. Without transcripts it still reads the skill's text, but marks every candidate unconfirmed.
 

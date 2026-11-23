@@ -22,7 +22,7 @@ Done when you can name every command, fetch, and write the target asks the model
 
 Collect up to ten recent transcripts of the target's runs, and call the Skill tool with "transcript-tally" to tally them. Of its columns, this audit reads the call shapes, repeats, errors, the split between tool and model time, tokens, and cost. Human time, stops, and permissions are `/retro`'s concern, with one exception: a script that replaces many calls the auto mode classifier checks with one call a rule allows saves a little, which is worth a line on a candidate but never a reason for one. Read the transcripts themselves only where a shape needs explaining.
 
-Pick runs whose inputs differ. A shape seen across varied inputs is the job's own; one seen only on a single kind of input may be that input's.
+Pick runs whose inputs differ. A shape the target's text requires is the job's own on any input; a shape the model chose is the job's own only when it recurs across varied inputs, and one seen on a single kind of input may be that input's.
 
 With no transcripts, audit the text alone and mark every candidate **unconfirmed**: the text shows what could be mechanical, and only runs show what it costs.
 
@@ -80,8 +80,8 @@ For each candidate, set what it saves against what it costs:
 
 Rate each **high** or **low** confidence:
 
-- **High**: the tally shows it across varied runs, the step went the same way every time, and the script's output is all the model ever used from it.
-- **Low**: text only, a single kind of input, a small saving, or a step the model sometimes did differently for a reason.
+- **High**: the step recurs and its cost is measured, and the script's output is all the model ever used from it. It recurs when the target's text requires it on every run (one measured run is then enough, since the text guarantees the repeat and the run gives the cost), or when the tally shows it, done the same way, across varied runs.
+- **Low**: a step the model chose to take, seen on one run or one kind of input; text with no run to measure it; a small saving; or a step the model sometimes did differently for a reason.
 
 Drop a candidate whose saving is a call or two per run, or whose flexibility cost outweighs it. If none is left, the result is "already well mechanized": say so, with the tally that shows it.
 
