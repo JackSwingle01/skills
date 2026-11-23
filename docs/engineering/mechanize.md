@@ -4,7 +4,7 @@
 
 Every move trades the model's **flexibility** (adapting when an input changes shape or a call fails in a new way) for savings, so it weighs the two and rates each candidate high or low confidence. "Already well mechanized" is a normal answer.
 
-It measures before it proposes. A bundled script tallies the tool calls across several transcripts of the same job, and a call that appears in every run with only its arguments changing is the strongest evidence a step is mechanical. Without transcripts it still reads the skill's text, but marks every candidate unconfirmed.
+It measures before it proposes. [transcript-tally](../../skills/engineering/transcript-tally/SKILL.md) counts the tool calls across several transcripts of the same job, and a call that appears in every run with only its arguments changing is the strongest evidence a step is mechanical. Without transcripts it still reads the skill's text, but marks every candidate unconfirmed.
 
 ## When to reach for it
 

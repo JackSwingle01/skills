@@ -139,6 +139,7 @@ Daily code work.
 - **[verification](./skills/engineering/verification/SKILL.md)**: Choose checks by the failure they catch and run them at the right cadence: a table of techniques across pre-production, deploy, release, and post-release, each with when to create it, when to run it, its costs, and its payoff.
 - **[loose-ends](./skills/engineering/loose-ends/SKILL.md)**: Sweep the pull requests merged since the last sweep for loose ends (untracked follow-ups, decisions an agent made without a person, new or undefined terms) and file them as one grilling ticket. Built to run on a schedule.
 - **[work-log](./skills/engineering/work-log/SKILL.md)**: Keep a per-ticket log, outside git, of the hypothesis made before any code and each revision and follow-up as it happens, so review, the PR body, and retros read what changed and why.
+- **[transcript-tally](./skills/engineering/transcript-tally/SKILL.md)**: Tally agent transcripts into numbers: tool calls by shape, errors, repeats, time split between tools, the model and a person, stops, permission decisions and denials, tokens and cost. `/retro` and `/mechanize` read it.
 
 ### Productivity
 

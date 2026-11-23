@@ -20,13 +20,7 @@ Done when you can name every command, fetch, and write the target asks the model
 
 ### 2. Tally the runs
 
-Collect up to ten recent transcripts of the target's runs: Claude Code session logs (`~/.claude/projects/<project>/*.jsonl`, subagents' logs beside them), or the `execution_file` an automated `claude-code-action` run writes (often saved as a run artifact). Run the tally beside this file over them:
-
-```bash
-python3 <this skill's directory>/tally.py <transcript> [<transcript> ...]
-```
-
-It prints each run's calls, errors, repeated identical calls, tokens, cost, and time (active, waiting on tools, and the model's own), then every **call shape** (the tool, plus the program and subcommand for shell calls) with how many runs it appears in, how much it returned, and how long it was waited on. Read the transcripts themselves only where a shape needs explaining.
+Collect up to ten recent transcripts of the target's runs, and call the Skill tool with "transcript-tally" to tally them. Of its columns, this audit reads the call shapes, repeats, errors, the split between tool and model time, tokens, and cost. Human time, stops, and permissions are `/retro`'s concern, with one exception: a script that replaces many calls the auto mode classifier checks with one call a rule allows saves a little, which is worth a line on a candidate but never a reason for one. Read the transcripts themselves only where a shape needs explaining.
 
 Pick runs whose inputs differ. A shape seen across varied inputs is the job's own; one seen only on a single kind of input may be that input's.
 

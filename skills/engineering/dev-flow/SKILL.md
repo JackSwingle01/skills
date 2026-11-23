@@ -66,7 +66,7 @@ The one exception is the **smart zone**: the window (~150k tokens on state-of-th
 
 ## Vocabulary underneath
 
-Two model-invoked references that the skills above pull in. Reach for them directly when the **words**, not the process, are the problem.
+Model-invoked references that the skills above pull in. Reach for them directly when the **words**, not the process, are the problem.
 
 - **`domain-modeling`**: the project's domain language. Challenge a fuzzy term, resolve an overloaded word, record a hard-to-reverse decision as a DR.
 - **`codebase-design`**: the deep-module vocabulary (module, interface, depth, seam, adapter, leverage, locality) for designing a module's shape. `/to-spec`, `/implement`, `tdd`, and `/improve-codebase-architecture` load it.
@@ -83,3 +83,4 @@ Off the flow entirely, for when the situation calls for them.
 - **`/wait-what`**: re-pitch a message that didn't land, in plain words and glossary terms.
 - **`/teach`**: learn a concept over several sessions.
 - **`writing-for-agents`**: the reference for writing skills, `AGENTS.md`, and other docs agents read.
+- **`transcript-tally`**: numbers from agent transcripts (calls, time, stops, denials, cost) for comparing runs. `/retro` and `/mechanize` load it.

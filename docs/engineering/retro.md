@@ -1,6 +1,6 @@
 ## What it does
 
-`retro` looks back over a coding session and suggests improvements to the agent's **environment**, so the next run goes better. It reads the session's own record (the current one by default, or one you point it at in the session logs). It finds the moments where the agent struggled, and gives you a list of candidate fixes, most severe first.
+`retro` looks back over a coding session and suggests improvements to the agent's **environment**, so the next run goes better. It reads the session's own record (the current one by default, or one you point it at in the session logs), and a [transcript-tally](../../skills/engineering/transcript-tally/SKILL.md) of it: where the time went, where the agent stopped for you, and what the permission layer denied. It finds the moments where the agent struggled, and gives you a list of candidate fixes, most severe first.
 
 It changes the environment, not the code. Take the bug the agent shipped, the file it needed twenty tool calls to find, or the rule the reviewer missed. `retro` does not fix any of them directly. It asks what in the repo let them happen, and proposes the check, pointer, or standard that prevents them next time. It also only proposes. Nothing changes until you pick a candidate.
 
@@ -23,6 +23,9 @@ Each candidate belongs to one category, and the category decides where the fix g
 | A tool call was expensive for what it returned | Streamline the tool, or replace it |
 | A steering file is full of lines that change nothing | Delete the **no-ops** |
 | The agent needed information it couldn't reach | Widen its access: tee the dev server log to a file, give read-only access to a service |
+| One slow call took most of the session | A narrower call, a background run, a cache, or deferring it to CI |
+| The agent stopped to ask something it could have found or the rules already decided | A navigation pointer, wider access, or a standing rule |
+| The permission layer denied or prompted for the same kind of call again and again | An allow rule, or a different approach |
 
 The leading idea is that standards belong to the **reviewer**, not the implementer. The implementing agent has the most context pressure, because it explores, writes code, and debugs failures. The reviewing agent gets a diff and nothing else. So a new rule goes where there is room to apply it, which is review. It never goes in AGENTS.md, which loads into every session's context window whether it is relevant or not.
 
@@ -53,6 +56,14 @@ Usually not, and `retro` pushes back on this more than anything else. A line in 
 **My setup mentions `CODING_STANDARDS.md` and I don't have one. Where does it come from?**
 
 No skill ships the file. The first time a session finds a judgement-call rule for the reviewer, `retro` proposes to create it. After you accept, [code-review](../../skills/engineering/code-review/SKILL.md) reads it. Any other standards doc you already keep, such as `CONTRIBUTING.md`, works the same way.
+
+**The agent kept stopping to ask me things. Does `retro` catch that?**
+
+Yes. Each stop the tally counts gets read for what it asked. If the agent could have found the answer itself, or the repo's rules already decided it, the fix is a pointer, wider access, or a standing rule. A stop for a real decision (scope, a one-way door) is the agent doing its job, and is not a finding. The seconds you took to answer don't count: they measure your schedule, not the agent.
+
+**How is it different from `mechanize`?**
+
+[mechanize](../../skills/engineering/mechanize/SKILL.md) reads many runs of one skill or job and moves the mechanical work the model repeats into code. `retro` reads one session and fixes the environment around the agent. When `retro` sees the same mechanical work in every run, it tells you to run `/mechanize`.
 
 **How is it different from `improve-codebase-architecture`?**
 
