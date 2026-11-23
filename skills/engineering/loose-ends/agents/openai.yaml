@@ -1,0 +1,3 @@
+interface:
+  display_name: "Loose Ends"
+  short_description: "Gather merged PRs' open items into a grilling ticket"

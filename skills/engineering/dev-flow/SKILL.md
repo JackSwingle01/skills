@@ -60,6 +60,7 @@ The one exception is the **smart zone**: the window (~150k tokens on state-of-th
 
 - **Something's broken** → `diagnosing-bugs`. For the hard ones: the bug that resists a first glance, the intermittent flake, the regression between two known-good states. It builds a feedback loop that goes red on *this* bug before theorising, then fixes with a regression test held to `tdd`'s standard. If the real finding is that there's no good seam to lock the bug down, that's a job for `/improve-codebase-architecture`.
 - **A huge, foggy effort, too big for one session** → `/wayfinder`. It charts a map of decision tickets and resolves them one per session, producing decisions, not deliverables. When the map clears, it joins the main flow at `/to-spec`. Save it for exactly that, never a well-scoped feature.
+- **Loose ends from merged PRs** → `loose-ends`, run on demand or daily by a scheduled job. It files the follow-ups, unattended decisions and new terms that merged PRs left behind as one grilling ticket, which enters the main flow at `/grill-with-docs`.
 - **Codebase upkeep** → `/improve-codebase-architecture` surveys for deepening opportunities. Picking one generates an idea that enters the main flow at `/grill-with-docs`.
 
 ## Vocabulary underneath

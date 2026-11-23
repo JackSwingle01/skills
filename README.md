@@ -136,6 +136,7 @@ Daily code work.
 - **[pr](./skills/engineering/pr/SKILL.md)**: The shape a pull request body should take: a summary as the smallest visual that makes the change clear, before/after evidence that it works, and a merge-danger call (one-way or two-way door, plus blast radius).
 - **[wizard](./skills/engineering/wizard/SKILL.md)**: Generate an interactive bash wizard that walks a human through steps only they can perform: provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover.
 - **[verification](./skills/engineering/verification/SKILL.md)**: Choose checks by the failure they catch and run them at the right cadence: a table of techniques across pre-production, deploy, release, and post-release, each with when to create it, when to run it, its costs, and its payoff.
+- **[loose-ends](./skills/engineering/loose-ends/SKILL.md)**: Sweep the pull requests merged since the last sweep for loose ends (untracked follow-ups, decisions an agent made without a person, new or undefined terms) and file them as one grilling ticket. Built to run on a schedule.
 - **[work-log](./skills/engineering/work-log/SKILL.md)**: Keep a per-ticket log, outside git, of the hypothesis made before any code and each revision and follow-up as it happens, so review, the PR body, and retros read what changed and why.
 
 ### Productivity
