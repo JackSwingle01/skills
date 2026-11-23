@@ -1,10 +1,12 @@
 ---
 name: mechanize
-description: "Audit a skill or automated agent job for mechanical work (fetching, copying, counting, formatting) the model does that code should do instead, and propose moving each step into a script."
+description: "Audit a skill or automated agent job for mechanical work (fetching, copying, counting, formatting) the model does that code should do instead, weigh each move against the flexibility it costs, and compare before and after."
 disable-model-invocation: true
 ---
 
 The model's tokens belong to the work only a model can do: judgment and writing. Everything else is **mechanical**, the same work every run: fetching what the next step needs, copying lines verbatim, counting, formatting a fixed template, paginating, retrying, deduplicating by ID, working out dates. This skill audits a **target** (a skill, or an automated job that runs one) for mechanical work and proposes moving each piece down the **ladder** into code.
+
+Every move trades **flexibility** for savings. The model adapts when an input changes shape, a call fails in a new way, or a run needs something no one planned for; a script does what it was written to do. A move earns its place only when the savings are real and the step never needed that adapting. "Already well mechanized, nothing worth moving" is a normal result: report it rather than reach for marginal candidates. A skill audited twice should find less the second time, not the same amount.
 
 ## Steps
 
@@ -24,7 +26,9 @@ Collect up to ten recent transcripts of the target's runs: Claude Code session l
 python3 <this skill's directory>/tally.py <transcript> [<transcript> ...]
 ```
 
-It prints each run's calls, errors, repeated identical calls, and tokens, then every **call shape** (the tool, plus the program and subcommand for shell calls) with how many runs it appears in and how much it returned. Read the transcripts themselves only where a shape needs explaining.
+It prints each run's calls, errors, repeated identical calls, tokens, cost, and time (active, waiting on tools, and the model's own), then every **call shape** (the tool, plus the program and subcommand for shell calls) with how many runs it appears in, how much it returned, and how long it was waited on. Read the transcripts themselves only where a shape needs explaining.
+
+Pick runs whose inputs differ. A shape seen across varied inputs is the job's own; one seen only on a single kind of input may be that input's.
 
 With no transcripts, audit the text alone and mark every candidate **unconfirmed**: the text shows what could be mechanical, and only runs show what it costs.
 
@@ -46,9 +50,11 @@ Look for these signs, in the text and in the tally:
 | A file read only to find a path, ID, or number; JSON output read by eye for two fields | the transcripts |
 | The same fetch in another skill too | search every skill's text for it |
 
+**Waiting** is a separate finding, not mechanical work. When most of a run's active time is one slow call (a full test suite, a long build), moving it into a script saves nothing. Name the call and the share of time it takes, and the remedy that fits: a narrower call (one test class, not the suite), running it in the background while the model works on, caching its result, or deferring it to CI or a nightly run.
+
 What stays with the model: deciding what something means, whether an item is covered, which option to recommend, what to write. A fetch stays with the model only when choosing what to fetch next is itself the judgment, as in a diagnosis.
 
-Done when each command, fetch, and write from step 1 is marked mechanical or judgment, with the reason.
+Done when each command, fetch, and write from step 1 is marked mechanical, judgment, or waiting, with the reason.
 
 ### 4. Place each candidate on the ladder
 
@@ -71,22 +77,44 @@ Each script follows these rules:
 
 Done when each candidate has a rung, the script's inputs and outputs, and what the model still decides.
 
-### 5. Present the candidates
+### 5. Weigh each candidate
 
-Order them by measured cost (calls, result size, errors across the runs), unconfirmed ones last. For each:
+For each candidate, set what it saves against what it costs:
+
+- **Saves**: calls and model turns per run (each call costs a model turn around it, often more than the call itself), tokens, errors and retries, minutes.
+- **Costs**: the flexibility it removes (did the model handle this step differently across runs for a good reason, or recover from something a script would fail on?), the code to keep working as the source changes, and how quietly it could fail.
+
+Rate each **high** or **low** confidence:
+
+- **High**: the tally shows it across varied runs, the step went the same way every time, and the script's output is all the model ever used from it.
+- **Low**: text only, a single kind of input, a small saving, or a step the model sometimes did differently for a reason.
+
+Drop a candidate whose saving is a call or two per run, or whose flexibility cost outweighs it. If none is left, the result is "already well mechanized": say so, with the tally that shows it.
+
+Done when each candidate is dropped or rated, with its saving and its cost stated.
+
+### 6. Present the candidates
+
+Order them by confidence, then by measured saving. For each:
 
 ```markdown
 ### <step, in the target's words>
 
-- **Evidence:** <the tally's numbers, or "unconfirmed: text only">
+- **Confidence:** <high or low>, because <reason>
+- **Evidence:** <the tally's numbers, or "text only">
 - **Rung:** <1 to 3>: <where the code lives and who runs it>
 - **Output:** <files or text it produces, and their shape>
 - **Model still decides:** <the judgment left>
+- **Flexibility lost:** <what the model could adapt to that the script can't, or "none seen">
 - **Fails loudly when:** <what it checks>
 ```
 
-Then stop and let the user pick.
+List waiting findings after them, each with its remedy, and the dropped candidates in one line each with why. Then stop and let the user pick.
 
-### 6. Build the picked ones
+### 7. Build and compare
 
-For each picked candidate: write the script; replace the target's command list with the one line that names the brief or the script; move the write into the caller where step 4 said to; and run the target once on real input, comparing its result and its tally against a run from before. A promoted skill whose text changed has its docs re-synced in the same change, following the repo's own rules for that.
+For each picked candidate: write the script; replace the target's command list with the one line that names the brief or the script; move the write into the caller where step 4 said to. A promoted skill whose text changed has its docs re-synced in the same change, following the repo's own rules for that.
+
+Then compare the target before and after on the same scenario. Run its own invocation (its job's prompt, or a headless `claude -p` with the same prompt, saving the transcript with `--output-format stream-json --verbose`) at least three times each with the skill as it was (a git worktree at the commit before the change) and as changed, and tally each set. A full comparison suits a run of a few minutes or less. For a long run (a build), compare only the changed step's calls in its tally rather than rerunning the whole job.
+
+Report the mean saving in cost, tokens, calls, and active time, and whether the results match: the same decisions, the same items, the same output a person would act on. A cheaper run with a worse result is a regression: revert that move. Done when the comparison is reported and every move kept shows a saving with matching results.

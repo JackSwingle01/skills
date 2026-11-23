@@ -2,6 +2,8 @@
 
 `mechanize` audits a skill, or an automated job that runs one, for **mechanical** work: the steps the model does the same way every run, such as fetching what the next step needs, copying lines verbatim, counting, or filling a fixed template. It proposes moving each one into code, so the model spends its tokens only on judgment and writing.
 
+Every move trades the model's **flexibility** (adapting when an input changes shape or a call fails in a new way) for savings, so it weighs the two and rates each candidate high or low confidence. "Already well mechanized" is a normal answer.
+
 It measures before it proposes. A bundled script tallies the tool calls across several transcripts of the same job, and a call that appears in every run with only its arguments changing is the strongest evidence a step is mechanical. Without transcripts it still reads the skill's text, but marks every candidate unconfirmed.
 
 ## When to reach for it
@@ -25,6 +27,18 @@ The scripts it builds fetch text verbatim and interpret none of it: a PR body is
 
 ## Common questions
 
+**Won't it find something to script every time I run it?**
+
+It shouldn't, and a second audit of the same skill should find less than the first. A candidate whose saving is a call or two per run, or that removes a step the model handled differently across runs for a good reason, is dropped. When nothing is left, it reports the skill as already well mechanized, with the tally that shows it.
+
+**My job spends most of its time waiting on a slow test suite. Will this help?**
+
+Not by mechanizing: a script runs the same slow suite just as slowly. The tally shows each run's tool time apart from the model's, and a run dominated by one call is reported as a waiting finding, with remedies that fit it: a narrower call, running it in the background, caching, or deferring it to CI.
+
+**How do I know a change was worth it?**
+
+It runs the target before and after on the same scenario, at least three times each, and reports the mean saving in cost, tokens, calls and time, with whether the results match. That suits runs of a few minutes; for a long build it compares only the changed step. A cheaper run with a worse result is reverted.
+
 **Why not have the scripts parse the PR sections the skill cares about?**
 
 Because a PR body's headings change, and a parser that misses a renamed section fails silently, while the model reading the whole body adapts. The script saves the fetching; the model keeps the reading.
@@ -36,7 +50,8 @@ Long prose inside JSON becomes one escaped string, which costs more tokens and d
 ## It's working if
 
 - The skill's text shrinks: a list of commands becomes one line naming a brief or a script.
-- The next tally of the job shows fewer calls and no retries, with the same result.
+- The before-and-after comparison shows fewer calls, lower cost and less time, with the same result.
+- A second audit finds less than the first, and sometimes nothing.
 - An automated job's model has lost its write permission, because the job makes the write from a file the model wrote.
 
 ## Where it fits
