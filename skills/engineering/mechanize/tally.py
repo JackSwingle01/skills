@@ -7,8 +7,12 @@ every call shape with how many runs it appears in, how often, its errors, the si
 returned, and the time spent waiting on it. A shape is the tool, plus the program and subcommand for
 shell calls.
 
-Active time leaves out the gaps where an interactive session waited on a person. Tool time counts
-overlapping parallel calls once; model time is the rest of the active time. Cost and duration come
+Active time leaves out the gaps where an interactive session waited on a person; those are reported
+as human time, and each prompt after the first as a stop. Tool time counts overlapping parallel
+calls once; model time is the rest of the active time. A tool call that waited on a person's
+approval counts that wait as tool time: transcripts record when a call started and when its result
+came back, not when it was approved. Permission decisions are counted by who made them (a rule, the
+auto mode classifier, the mode, or other), and every denial is listed. Cost and duration come
 from a run's final `result` event when it has one (headless and claude-code-action runs do).
 
 usage: tally.py TRANSCRIPT [TRANSCRIPT ...]
@@ -104,7 +108,8 @@ def run_stats(path):
     calls, results, seen_msgs, started = {}, {}, set(), {}
     out_tokens = in_tokens = 0
     cost = duration = None
-    stamps, idle = [], 0.0
+    stamps, idle, stops = [], 0.0, 0
+    perms, denials = defaultdict(int), []
     for e in events(path):
         if not isinstance(e, dict):
             continue
@@ -118,10 +123,16 @@ def run_stats(path):
         content = msg.get("content")
         blocks = content if isinstance(content, list) else []
         is_result = any(isinstance(b, dict) and b.get("type") == "tool_result" for b in blocks)
-        if t is not None and e.get("type") in ("user", "assistant"):
+        if t is not None and e.get("type") in ("user", "assistant") and not e.get("isMeta"):
             if e.get("type") == "user" and not is_result and stamps:
                 idle += t - stamps[-1]  # a person's prompt: the gap before it was waiting on them
+                stops += 1
             stamps.append(t)
+        if e.get("type") == "user" and is_result and isinstance(e.get("permissionDecision"), dict):
+            pd = e["permissionDecision"]
+            perms[pd.get("reasonType") or "other"] += 1
+            if pd.get("decision") == "reject":
+                denials.append((pd, [b.get("tool_use_id") for b in blocks if isinstance(b, dict)]))
         if e.get("type") == "assistant":
             mid = msg.get("id")
             usage = msg.get("usage") or {}
@@ -146,7 +157,7 @@ def run_stats(path):
         active = duration / 1000
     tool = union([(r[3], r[4]) for r in results.values() if r[2] is not None])
     return {"calls": calls, "results": results, "in": in_tokens, "out": out_tokens, "cost": cost,
-            "active": active, "tool": tool}
+            "active": active, "tool": tool, "human": idle, "stops": stops, "perms": perms, "denials": denials}
 
 
 def main(paths):
@@ -155,9 +166,11 @@ def main(paths):
     shapes = defaultdict(lambda: {"runs": set(), "calls": 0, "errors": 0, "chars": 0, "wait": 0.0,
                                   "max": 0.0, "example": ""})
     print("## Runs\n")
-    print("| Run | Calls | Errors | Repeats | Active s | Tool s | Model s | Input tokens | Output tokens | Cost |")
-    print("|---|---|---|---|---|---|---|---|---|---|")
+    print("| Run | Calls | Errors | Repeats | Active s | Tool s | Model s | Human s | Stops | Permissions | "
+          "Input tokens | Output tokens | Cost |")
+    print("|---|---|---|---|---|---|---|---|---|---|---|---|---|")
     totals = defaultdict(float)
+    denied = []
     for path in paths:
         r = run_stats(path)
         calls, results = r["calls"], r["results"]
@@ -180,15 +193,26 @@ def main(paths):
         cost = f"${r['cost']:.3f}" if r["cost"] is not None else ""
         for k, v in (("calls", len(calls)), ("errors", errors), ("repeats", repeats), ("active", r["active"]),
                      ("tool", r["tool"]), ("model", model), ("in", r["in"]), ("out", r["out"]),
-                     ("cost", r["cost"] or 0)):
+                     ("cost", r["cost"] or 0), ("human", r["human"]), ("stops", r["stops"])):
             totals[k] += v
+        perms = ", ".join(f"{k} {v}" for k, v in sorted(r["perms"].items()))
+        for pd, ids in r["denials"]:
+            for cid in ids:
+                if cid in calls:
+                    name, inp = calls[cid]
+                    denied.append((path, shape(name, inp), pd.get("classifierCategory") or pd.get("reasonCode") or "",
+                                   (inp.get("command") or json.dumps(inp))[:100].replace("\n", " ").replace("|", "\\|")))
         print(f"| `{path}` | {len(calls)} | {errors} | {repeats} | {r['active']:.0f} | {r['tool']:.0f} | "
-              f"{model:.0f} | {r['in']:,} | {r['out']:,} | {cost} |")
+              f"{model:.0f} | {r['human']:.0f} | {r['stops']} | {perms} | {r['in']:,} | {r['out']:,} | {cost} |")
     n = len(paths)
     t = {k: v / n for k, v in totals.items()}
     print(f"| **mean of {n}** | {t['calls']:.1f} | {t['errors']:.1f} | {t['repeats']:.1f} | {t['active']:.0f} | "
-          f"{t['tool']:.0f} | {t['model']:.0f} | {t['in']:,.0f} | {t['out']:,.0f} | "
+          f"{t['tool']:.0f} | {t['model']:.0f} | {t['human']:.0f} | {t['stops']:.1f} |  | {t['in']:,.0f} | {t['out']:,.0f} | "
           f"{'$%.3f' % t['cost'] if totals['cost'] else ''} |")
+    if denied:
+        print("\n## Denials\n\n| Run | Shape | Reason | Call |\n|---|---|---|---|")
+        for path, sh, why, ex in denied:
+            print(f"| `{path}` | {sh} | {why} | `{ex}` |")
     print(f"\n## Call shapes\n\nIn N of {n} runs. A shape in every run is the strongest sign of mechanical work;"
           " a shape with a long wait is a sign of a slow call.\n")
     print("| Shape | Runs | Calls | Errors | Result KB | Wait s | Longest s | Example |")
