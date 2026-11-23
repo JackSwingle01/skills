@@ -60,11 +60,13 @@ The one exception is the **smart zone**: the window (~150k tokens on state-of-th
 
 - **Something's broken** → `diagnosing-bugs`. For the hard ones: the bug that resists a first glance, the intermittent flake, the regression between two known-good states. It builds a feedback loop that goes red on *this* bug before theorising, then fixes with a regression test held to `tdd`'s standard. If the real finding is that there's no good seam to lock the bug down, that's a job for `/improve-codebase-architecture`.
 - **A huge, foggy effort, too big for one session** → `/wayfinder`. It charts a map of decision tickets and resolves them one per session, producing decisions, not deliverables. When the map clears, it joins the main flow at `/to-spec`. Save it for exactly that, never a well-scoped feature.
+- **Loose ends from merged PRs** → `loose-ends`, run on demand or daily by a scheduled job. It files the follow-ups, unattended decisions and new terms that merged PRs left behind as one grilling ticket, which enters the main flow at `/grill-with-docs`.
 - **Codebase upkeep** → `/improve-codebase-architecture` surveys for deepening opportunities. Picking one generates an idea that enters the main flow at `/grill-with-docs`.
+- **Agent upkeep** → `/mechanize`. When a skill or an automated agent job spends its tokens fetching, copying, or formatting, it moves that mechanical work into a pre-fetched brief or a bundled script, leaving the model the judgment and the writing. `/retro` looks at one session; `/mechanize` looks across a job's runs.
 
 ## Vocabulary underneath
 
-Two model-invoked references that the skills above pull in. Reach for them directly when the **words**, not the process, are the problem.
+Model-invoked references that the skills above pull in. Reach for them directly when the **words**, not the process, are the problem.
 
 - **`domain-modeling`**: the project's domain language. Challenge a fuzzy term, resolve an overloaded word, record a hard-to-reverse decision as a DR.
 - **`codebase-design`**: the deep-module vocabulary (module, interface, depth, seam, adapter, leverage, locality) for designing a module's shape. `/to-spec`, `/implement`, `tdd`, and `/improve-codebase-architecture` load it.
@@ -81,3 +83,4 @@ Off the flow entirely, for when the situation calls for them.
 - **`/wait-what`**: re-pitch a message that didn't land, in plain words and glossary terms.
 - **`/teach`**: learn a concept over several sessions.
 - **`writing-for-agents`**: the reference for writing skills, `AGENTS.md`, and other docs agents read.
+- **`transcript-tally`**: numbers from agent transcripts (calls, time, stops, denials, cost) for comparing runs. `/retro` and `/mechanize` load it.

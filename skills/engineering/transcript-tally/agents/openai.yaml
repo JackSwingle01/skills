@@ -1,0 +1,3 @@
+interface:
+  display_name: "Transcript Tally"
+  short_description: "Count an agent's calls, time, stops and denials"

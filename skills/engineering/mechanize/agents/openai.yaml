@@ -1,0 +1,5 @@
+interface:
+  display_name: "Mechanize"
+  short_description: "Move an agent's mechanical work into code"
+policy:
+  allow_implicit_invocation: false

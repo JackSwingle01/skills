@@ -14,6 +14,7 @@ Reachable only when you type them (Claude Code: `disable-model-invocation: true`
 - **[to-tickets](./to-tickets/SKILL.md)**: Break any plan, spec, or conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published in the repo's ticket conventions.
 - **[wayfinder](./wayfinder/SKILL.md)**: Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on the issue tracker, resolved one at a time until the way to the destination is clear.
 - **[retro](./retro/SKILL.md)**: Suggest improvements to the coding agent's environment (navigation, automated checks, coding standards, steering files, tooling) after a session, most severe first.
+- **[mechanize](./mechanize/SKILL.md)**: Audit a skill or automated agent job for mechanical work (fetching, copying, counting, formatting) the model does that code should do, using a tally of its runs' tool calls, and propose moving each step into code.
 
 ## Model-invoked
 
@@ -31,4 +32,6 @@ Model- or user-reachable (rich trigger phrasing so the model can reach for them)
 - **[pr](./pr/SKILL.md)**: The shape a pull request body should take: a summary as the smallest visual that makes the change clear, before/after evidence that it works, and a merge-danger call (one-way or two-way door, plus blast radius).
 - **[wizard](./wizard/SKILL.md)**: Generate an interactive bash wizard that walks a human through steps only they can perform: provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover.
 - **[verification](./verification/SKILL.md)**: Choose checks by the failure they catch and run them at the right cadence: a table of techniques across pre-production, deploy, release, and post-release, each with when to create it, when to run it, its costs, and its payoff.
+- **[loose-ends](./loose-ends/SKILL.md)**: Sweep merged pull requests for loose ends (untracked follow-ups, decisions an agent made without a person, new or undefined terms) and file them as one grilling ticket, on demand or from a scheduled job.
 - **[work-log](./work-log/SKILL.md)**: Keep a per-ticket log, outside git, of the hypothesis made before any code and each revision and follow-up as it happens, so review, the PR body, and retros read what changed and why.
+- **[transcript-tally](./transcript-tally/SKILL.md)**: Tally agent transcripts into numbers (tool calls by shape, time split between tools, the model and a person, stops, permission denials, tokens and cost) for `/retro` and `/mechanize`.
