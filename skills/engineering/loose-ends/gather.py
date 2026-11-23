@@ -8,6 +8,9 @@ references, to decide which other issues and PRs to fetch.
     gather.py --repo OWNER/NAME --out DIR [--since ISO | --prs "12 15"] [--base main]
               [--git PATH] [--docs PATH ...] [--logs DIR] [--max N]
 
+--docs defaults to domain-modeling's layout; pass the repo's own paths when it keeps its glossary or
+decision records elsewhere. --logs defaults to work-log's `.agent-logs`.
+
 Window: --prs, else PRs merged after --since, else after the newest `loose-ends` cursor marker on
 the tracker, else every merged PR. --max keeps the oldest N, so the next sweep starts after them.
 
@@ -163,6 +166,12 @@ def quote(text):
     return f"{fence}markdown\n{text}\n{fence}"
 
 
+def is_doc(path, docs):
+    if docs is None:  # domain-modeling's layout, at the root or inside any context
+        return path.rsplit("/", 1)[-1] in ("GLOSSARY.md", "GLOSSARY-MAP.md") or "/docs/decisions/" in "/" + path
+    return any(path == d or path.startswith(d.rstrip("/") + "/") for d in docs)
+
+
 def git_side(repo_dir, pr, docs, logs):
     oid = (pr.get("mergeCommit") or {}).get("oid")
     if not oid:
@@ -175,7 +184,7 @@ def git_side(repo_dir, pr, docs, logs):
     base = parents[0]
     files = git(repo_dir, "diff", "--name-status", base, oid).splitlines()
     changed = [line.split("\t")[-1] for line in files]
-    doc_paths = [p for p in changed if any(p == d or p.startswith(d.rstrip("/") + "/") for d in docs)]
+    doc_paths = [p for p in changed if is_doc(p, docs)]
     out = {"files": files, "commits": git(repo_dir, "log", "--reverse", "--format=%h %an %ad%n%s%n%b%n---", "--date=short", f"{base}..{oid}") if len(parents) > 1 else git(repo_dir, "log", "-1", "--format=%h %an %ad%n%s%n%b", "--date=short", oid)}
     out["doc_diff"] = git(repo_dir, "diff", base, oid, "--", *doc_paths) if doc_paths else ""
     out["doc_log"] = git(repo_dir, "log", "--reverse", "--format=%h %an %ad %s", "--date=short", f"{base}..{oid}", "--", *doc_paths) if doc_paths else ""
@@ -248,7 +257,9 @@ def main():
     ap.add_argument("--prs")
     ap.add_argument("--base", default="main")
     ap.add_argument("--git", default=".")
-    ap.add_argument("--docs", nargs="*", default=["GLOSSARY.md", "CONTEXT.md", "documentation/decisions", "docs/adr", "docs/decisions"])
+    ap.add_argument("--docs", nargs="*", default=None,
+                    help="glossary files and decision-record folders whose diffs to include (default: domain-modeling's "
+                         "layout: any GLOSSARY.md or GLOSSARY-MAP.md, and any docs/decisions/ folder)")
     ap.add_argument("--logs", default=".agent-logs")
     ap.add_argument("--max", type=int, default=0)
     a = ap.parse_args()
