@@ -89,14 +89,16 @@ Done when each candidate is dropped or rated, with its saving and its cost state
 
 ### 6. Present the candidates
 
+Write the report for a reader who has not read this skill: the ladder, its rung numbers, and the tally's shape labels are this skill's working vocabulary, not the reader's. Say where the code would run and who runs it, and name each call by what it fetches or does ("15 calls fetching PR comments", not "15 × `get_comments`").
+
 Order them by confidence, then by measured saving. For each:
 
 ```markdown
 ### <step, in the target's words>
 
 - **Confidence:** <high or low>, because <reason>
-- **Evidence:** <the tally's numbers, or "text only">
-- **Rung:** <1 to 3>: <where the code lives and who runs it>
+- **Evidence:** <the tally's numbers, in plain words, or "text only">
+- **Moves to:** <where the code lives and what runs it, e.g. "a workflow step that writes the brief before the model starts", "a script beside the skill that the model runs once">
 - **Output:** <files or text it produces, and their shape>
 - **Model still decides:** <the judgment left>
 - **Flexibility lost:** <what the model could adapt to that the script can't, or "none seen">
