@@ -22,7 +22,7 @@ Anything already ticketed, answered in a later PR or comment, fixed on the defau
 
 ## Prerequisites
 
-An issue tracker the agent can read and write, documented in `AGENTS.md`/`CLAUDE.md`, and PR bodies and work logs that record follow-ups and revisions: [pr](../../skills/engineering/pr/SKILL.md) and [work-log](../../skills/engineering/work-log/SKILL.md) write them in the shape it reads. It finds where the last sweep stopped from a marker in its last ticket, so it keeps no state of its own.
+An issue tracker the agent can read and write, documented in `AGENTS.md`/`CLAUDE.md`, and PR bodies and work logs that record follow-ups and revisions: [pr](../../skills/engineering/pr/SKILL.md) and [work-log](../../skills/engineering/work-log/SKILL.md) write them in the shape it reads. A scheduled job passes the window itself (the PRs merged since its last successful run). Run by hand, it finds where the last sweep stopped from a marker in its last ticket, so it keeps no state of its own. A sweep that finds nothing open posts nothing.
 
 ## Common questions
 

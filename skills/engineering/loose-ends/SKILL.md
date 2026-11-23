@@ -11,9 +11,9 @@ Read the repo's issue-tracker conventions first (`AGENTS.md`/`CLAUDE.md`, and an
 
 ### 1. Find the window
 
-The **cursor** is the newest `<!-- loose-ends: through <ISO time> -->` marker in the body or comments of any ticket labelled `loose-ends`, open or closed. The window is every PR merged into the default branch after the cursor. With no marker, the window is every merged PR. A caller may pass its own window instead.
+A window the caller passes (a start time, or a list of PR numbers) is the window. Otherwise the **cursor** is the newest `<!-- loose-ends: through <ISO time> -->` marker in the body or comments of any ticket labelled `loose-ends`, open or closed, and the window is every PR merged into the default branch after it. With neither, the window is every merged PR.
 
-Done when you hold the window's PR numbers, oldest first, and the merge time of the newest. An empty window ends the sweep: file nothing, and report the cursor.
+Done when you hold the window's PR numbers, oldest first, and the merge time of the newest. An empty window ends the sweep at step 5.
 
 ### 2. Gather candidates
 
@@ -47,7 +47,7 @@ Done when each surviving item has been checked against the tracker, the later PR
 
 ### 4. File the ticket
 
-No items survive: file no ticket. If a `loose-ends` ticket exists, add a comment `Swept #<first> to #<last>: nothing open.` ending with the new cursor, so the next sweep starts after this window. Otherwise stop.
+No items survive: post nothing (no ticket, no comment) and go to step 5. The one exception: when the window came from the cursor and a `loose-ends` ticket exists, comment `Swept #<first> to #<last>: nothing open.` on it, ending with the new cursor marker, so the next sweep starts after this window.
 
 Items survive: file one ticket in the shape below, labelled `loose-ends` and with the repo's label that keeps it out of automated work queues (create either label if it is missing). Each item is one line, worded as the question the user has to answer, in the repo's glossary terms, followed by its source. Order the sections Confirm, Follow-up, Term, and within each, the items whose answer would change merged behaviour first.
 
@@ -76,4 +76,8 @@ Title it `Loose ends: PRs #<first> to #<last>`. Drop a section with no items.
 
 ### 5. Report
 
-Give the ticket's link and the item count per class, or the cursor and why nothing was filed.
+Report one outcome:
+
+- **Filed**: the ticket's link and the item count per class.
+- **Nothing open**: the PRs read, and for each candidate, the rule in step 3 that dropped it.
+- **Empty window**: the window's start, and that no PR merged after it.
