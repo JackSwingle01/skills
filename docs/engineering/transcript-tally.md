@@ -1,6 +1,6 @@
 ## What it does
 
-`transcript-tally` turns agent transcripts into numbers: tool calls grouped by shape, errors, repeated calls, where the time went (tools, the model, waiting on a person), the stops where the agent waited on you, who approved each call and what was denied, tokens, and cost. It reads Claude Code session logs, headless `claude -p` output, and the execution files `claude-code-action` writes.
+`transcript-tally` turns agent transcripts into numbers: tool calls grouped by shape, errors, repeated calls, where the time went (tools, the model, waiting on a person), the stops where the agent waited on you, who approved each call and what was denied, tokens, and cost. Each harness writes transcripts in its own format, so each gets its own script. `tally_claude.py` reads Claude Code session logs, headless `claude -p` output, and the execution files `claude-code-action` writes. Cursor, Codex or any other harness gets a `tally_<provider>.py` of its own, printing the same columns, rather than one script that parses every format.
 
 It counts and never judges. A long tool wait, a stop or a denial is a place to look, and the skill that called it decides what that place means.
 

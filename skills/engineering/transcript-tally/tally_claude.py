@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Tally an agent's tool calls across transcripts, so repeated mechanical work shows up as numbers.
+"""Tally Claude agent transcripts, so repeated mechanical work shows up as numbers.
 
-Reads Claude Code session logs (JSONL, one event per line) and claude-code-action execution files
+Claude only: Claude Code session logs (JSONL, one event per line) and claude-code-action execution files
 (one JSON array of the same messages). Each file is one run. Prints Markdown: per-run totals, then
 every call shape with how many runs it appears in, how often, its errors, the size of what it
 returned, and the time spent waiting on it. A shape is the tool, plus the program and subcommand for
@@ -15,7 +15,7 @@ came back, not when it was approved. Permission decisions are counted by who mad
 auto mode classifier, the mode, or other), and every denial is listed. Cost and duration come
 from a run's final `result` event when it has one (headless and claude-code-action runs do).
 
-usage: tally.py TRANSCRIPT [TRANSCRIPT ...]
+usage: tally_claude.py TRANSCRIPT [TRANSCRIPT ...]
 """
 import json
 import shlex
