@@ -39,11 +39,10 @@ A run has these steps, in order:
    - **c. Review.** Start a subagent with a fresh context window for an adversarial design review against the ticket and the scout's report. Weigh each finding on its merits rather than accepting it, and log each change made as a Revised line.
 3. Drive [tdd](../../skills/engineering/tdd/SKILL.md) at the pre-agreed seams, one red-green slice at a time. If the spec names seams, it uses them unless there is a good reason not to, and logs any seam it adds or changes as a Revised line.
 4. Choose a check for each risk with [verification](../../skills/engineering/verification/SKILL.md), and run lint, typecheck, and tests at its cadence.
-5. Run the full suite and every change-triggered check before the PR.
-6. Validate each acceptance criterion end to end, logging any it couldn't validate as a follow-up.
-7. Commit to the current branch.
-8. Run [code-review](../../skills/engineering/code-review/SKILL.md) against the branch's base, passing it the work log and treating decisions made during the work as context to challenge, not spec. Commit its fixes separately.
-9. Open the pull request with [pr](../../skills/engineering/pr/SKILL.md).
+5. Validate each acceptance criterion end to end, logging any it couldn't validate as a follow-up.
+6. Commit to the current branch.
+7. Start the full suite and every change-triggered check in the background and, without waiting for them, run [code-review](../../skills/engineering/code-review/SKILL.md) against the branch's base, passing it the work log and treating decisions made during the work as context to challenge, not spec. When the review returns, read the checks' result: a failed check gets a fix commit of its own, and the review's fixes are committed separately.
+8. Open the pull request with [pr](../../skills/engineering/pr/SKILL.md).
 
 One run covers one ticket. The tickets [to-tickets](../../skills/engineering/to-tickets/SKILL.md) produces are tracer-bullet vertical slices sized to fit a single fresh context window, so the intended rhythm is: clear context, implement one ticket, commit, clear again. Each ticket is self-contained, so you can discard the previous ticket's context.
 
@@ -65,7 +64,7 @@ Not with `/implement`: one invocation, one ticket. For a whole spec, run one `/i
 
 **Does it open a pull request, or just commit?**
 
-Both. It commits the implementation, commits the review's fixes separately, then calls [pr](../../skills/engineering/pr/SKILL.md) and opens the pull request in the same session, with the work log's revisions and follow-ups in the body. The split commits are deliberate: across runs, the share of tickets that needed a review commit measures how well the build and the review are each doing.
+Both. It commits the implementation, commits a fix for any failed check and the review's fixes separately, then calls [pr](../../skills/engineering/pr/SKILL.md) and opens the pull request in the same session, with the work log's revisions and follow-ups in the body. The split commits are deliberate: across runs, the share of tickets that needed a review commit measures how well the build and the review are each doing.
 
 **`code-review` says it cannot see my changes.**
 
@@ -87,7 +86,7 @@ The agent resolved `#2` against another numbered list in context, such as a todo
 - Two fresh subagents appear in the trace before any code: one scouting the change, one reviewing the design.
 - The work log's hypothesis has an `Affects:` line naming existing behaviour, and design-review changes show up as `Revised` lines.
 - You can see an actual `tdd` Skill tool call in the trace, not just tests appearing in the diff.
-- Typechecks and single test files run repeatedly during the run, and the full suite runs once near the end.
+- Typechecks and single test files run repeatedly during the run, and the full suite starts after the implementation commit and runs while the review does.
 - Every acceptance criterion is either validated end to end or listed as a follow-up with what was missing.
 - The run reaches an open pull request without you prompting it to carry on.
 - The diff is one ticket's worth of change: a vertical slice through every layer, not several tickets swept together.

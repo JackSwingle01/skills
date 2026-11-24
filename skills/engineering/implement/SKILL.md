@@ -26,10 +26,10 @@ Call the Skill tool with "tdd" where possible, at pre-agreed seams. If the spec 
 
 Use whatever lint, typecheck, and test commands the repo has, at `verification`'s cadence.
 
-After the tests pass, validate each acceptance criterion end to end, and log any you couldn't validate as a Follow-up with what was missing.
+After the targeted tests pass, validate each acceptance criterion end to end, and log any you couldn't validate as a Follow-up with what was missing.
 
 Commit your work to the current branch, following the repo's commit conventions.
 
-Then call the Skill tool with "code-review" against the branch's base, passing it the work log's path, with decisions made during the work as context to challenge, not spec. Commit its fixes separately. The two commits are a measurement: across runs, the share that needed a review commit shows how well the implementation and the review are each doing their job.
+Then start the full suite and every other check `verification` scheduled for before the PR in the background and, without waiting for them, call the Skill tool with "code-review" against the branch's base, passing it the work log's path, with decisions made during the work as context to challenge, not spec. When the review returns, read the checks' result. Commit a fix for a failed check on its own, then commit the review's fixes separately. The review commit is a measurement: across runs, the share that needed one shows how well the implementation and the review are each doing their job.
 
 Finally, call the Skill tool with "pr", passing it the work log's path, and open the pull request in this session using the repo's conventions.
