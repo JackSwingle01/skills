@@ -13,7 +13,8 @@ Where the work currently lives decides whether this is the right skill:
 | The work is… | Reach for |
 | --- | --- |
 | A ticket on the tracker | `/implement #42`, one ticket per session, clearing context between tickets |
-| A spec, not yet split up, and the build spans sessions | [to-tickets](../../skills/engineering/to-tickets/SKILL.md) first, then `/implement` per ticket |
+| A whole set of tickets you want built in one go | [implement-tickets](../../skills/engineering/implement-tickets/SKILL.md), which runs `implement` per ticket in fresh subagents |
+| A spec, not yet split up, and the build spans sessions | [to-tickets](../../skills/engineering/to-tickets/SKILL.md) first, then `/implement` per ticket or [implement-tickets](../../skills/engineering/implement-tickets/SKILL.md) |
 | A spec, and the build is small | `/implement` directly against the spec |
 | Only in the conversation you just had, and it's still small | `/implement` right there, in the same window |
 | Not written down anywhere yet | [grill-with-docs](../../skills/engineering/grill-with-docs/SKILL.md), or [grill-me](../../skills/productivity/grill-me/SKILL.md) if there's no codebase |
@@ -61,7 +62,7 @@ Correct, and expected. `implement` has no completion step. It ends at the commit
 
 **Can I point it at all my tickets at once, or run several in parallel?**
 
-Not with `/implement`: one invocation, one ticket. For a whole spec, run one `/implement` per ticket. Running several `/implement` sessions side by side in one checkout is worse than unsupported. One field report describes a `git commit --amend` in one session landing on another session's commit, a stash vanishing from `refs/stash`, and commits landing on the wrong branch, all in a single afternoon across three issues. The sessions share one working directory, one index, and one HEAD. Users work around this with git worktrees, but `refs/stash` is shared across worktrees too, so worktrees alone do not fix the stash case.
+Not with `/implement`: one invocation, one ticket. For a whole spec, run [implement-tickets](../../skills/engineering/implement-tickets/SKILL.md), which hands each ticket to a fresh subagent running `implement` in blocking order, or run one `/implement` per ticket yourself. Running several `/implement` sessions side by side in one checkout is worse than unsupported. One field report describes a `git commit --amend` in one session landing on another session's commit, a stash vanishing from `refs/stash`, and commits landing on the wrong branch, all in a single afternoon across three issues. The sessions share one working directory, one index, and one HEAD. Users work around this with git worktrees, but `refs/stash` is shared across worktrees too, so worktrees alone do not fix the stash case.
 
 **Does it open a pull request, or just commit?**
 
