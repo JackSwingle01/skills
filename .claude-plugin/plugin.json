@@ -1,6 +1,6 @@
 {
   "name": "mp",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Agent skills for engineering work: grilling, spec/ticket flows, TDD, code review, domain modelling and more. Forked from mattpocock/skills.",
   "author": {
     "name": "Jack Swingle",
